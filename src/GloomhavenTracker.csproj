@@ -5,9 +5,6 @@
     <UserSecretsId>aspnet-GloomhavenTracker-8B67844E-6182-43DE-B671-1AA69406179C</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Update="Server=gloomhaven.cjpowrl0vm2n.eu-west-2.rds.amazonaws.com;Database=gloomhaven;user id=admin;password=admin123" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DbUp" Version="4.3.0" />
