@@ -1,0 +1,65 @@
+@using GloomhavenTracker.Models
+@using Microsoft.AspNetCore.Identity
+@model PartyViewModel
+@{
+    ViewData["Title"] = "Create Party";
+}
+
+<h1>@ViewData["Title"].</h1>
+
+<form asp-controller="Party" asp-action="Create" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+    <h4>Create a new party.</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumberOfPlayers" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="NumberOfPlayers" class="form-control" />
+            <span asp-validation-for="NumberOfPlayers" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateOfCreation" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input type="date" asp-for="DateOfCreation" class="form-control" />
+            <span asp-validation-for="DateOfCreation" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Notes" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Notes" class="form-control" />
+            <span asp-validation-for="Notes" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Reputation" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Reputation" class="form-control" />
+            <span asp-validation-for="Reputation" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Prosperity" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Prosperity" class="form-control" />
+            <span asp-validation-for="Prosperity" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Create!</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

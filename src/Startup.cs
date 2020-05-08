@@ -31,31 +31,30 @@ namespace GloomhavenTracker
         public void ConfigureServices(IServiceCollection services)
         {
             // that's where you tell that you want to use MySQL
-            services.AddDbContext<IdentityContext>(
+            services.AddDbContext<GloomhavenTrackerContext>(
                 options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection"))
             );
             services.AddIdentityCore<ApplicationUser>()
                     .AddRoles<IdentityRole>()
-                    .AddEntityFrameworkStores<IdentityContext>()
-                    .AddDefaultUI()
+                    .AddEntityFrameworkStores<GloomhavenTrackerContext>()
                     .AddSignInManager()
                     .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
-        // Password settings
-        options.Password.RequireDigit = true;
+                // Password settings
+                options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
 
-        // Lockout settings
-        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
 
-        // User settings
-        options.User.RequireUniqueEmail = true;
+                // User settings
+                options.User.RequireUniqueEmail = true;
             });
 
             // If you want to tweak Identity cookies, they're no longer part of IdentityOptions.
@@ -70,14 +69,14 @@ namespace GloomhavenTracker
             .AddIdentityCookies(o => { });
 
             services.AddMvc(
-        //         options =>
-        //         {
-        //             var policy = new AuthorizationPolicyBuilder()
-        //                 .RequireAuthenticatedUser()
-        //                 .Build();
-        //             options.Filters.Add(new AuthorizeFilter(policy));
-        //     // ...
-        // }
+            //         options =>
+            //         {
+            //             var policy = new AuthorizationPolicyBuilder()
+            //                 .RequireAuthenticatedUser()
+            //                 .Build();
+            //             options.Filters.Add(new AuthorizeFilter(policy));
+            //     // ...
+            // }
             );
         }
 

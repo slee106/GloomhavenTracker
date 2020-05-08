@@ -1,0 +1,26 @@
+@using GloomhavenTracker.Models
+@model List<PartyViewModel>
+@{
+    ViewData["Title"] = "Party";
+}
+
+<div class="text-center">
+    <h1 class="display-4">List of Parties</h1>
+    <table class="table table-bordered table-responsive table-hover">  
+        <tr>  
+            <th>Party Name</th>   
+        </tr>  
+        @foreach (var d in Model)  
+        {  
+            <tr> 
+                <td>
+                    <p>@Html.ActionLink(d.Name, "Detail", new { id = d.Id })</p>
+                </td> 
+                <td>
+                    <p>@Html.ActionLink("Delete", "Delete", new { id = d.Id })</p>
+                </td> 
+            </tr>  
+        }  
+    </table>
+ <a  class="nav-link text-dark" asp-controller="Party" asp-action="Create" title="Manage">Create Party</a>
+</div>

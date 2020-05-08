@@ -1,0 +1,59 @@
+@using GloomhavenTracker.Models
+@model PartyViewModel
+@{
+    ViewData["Title"] = "Party";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Party</h1>
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Name)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.NumberOfPlayers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.NumberOfPlayers)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Notes)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Prosperity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Prosperity)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Reputation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Reputation)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.DateOfCreation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.DateOfCreation)
+            </td>
+        </tr>
+    </table>
+</div>

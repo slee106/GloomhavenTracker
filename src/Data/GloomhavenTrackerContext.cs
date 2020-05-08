@@ -1,16 +1,17 @@
 using GloomhavenTracker.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GloomhavenTracker.Data
 {
-    public class IdentityContext : IdentityDbContext<ApplicationUser>
+    public class GloomhavenTrackerContext : IdentityDbContext<ApplicationUser>
     {
-        public IdentityContext(DbContextOptions<IdentityContext> options)
+        public GloomhavenTrackerContext(DbContextOptions<GloomhavenTrackerContext> options)
             : base(options)
         {
         }
+
+        public DbSet<PartyViewModel> Parties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

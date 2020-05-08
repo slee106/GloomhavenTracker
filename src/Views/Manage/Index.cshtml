@@ -1,0 +1,19 @@
+@using GloomhavenTracker.Models.ManageViewModels
+@model IndexViewModel
+@{
+    ViewData["Title"] = "Manage your account";
+}
+
+<h1>@ViewData["Title"].</h1>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+<div>
+    <h4>Change your account settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            <text>[&nbsp;&nbsp;<a asp-controller="Manage" asp-action="ChangePassword">Change</a>&nbsp;&nbsp;]</text>
+        </dd>
+    </dl>
+</div>
