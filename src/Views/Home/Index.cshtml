@@ -4,5 +4,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <a  class="nav-link text-dark" asp-controller="Party" asp-action="Index" title="Manage">View parties</a>
+   <form method="get" asp-controller="Party" asp-action="Index">
+        <input type="submit" value="View Parties" />
+    </form>
 </div>

@@ -67,5 +67,26 @@ namespace GloomhavenTracker.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var model = gloomhavenTrackerContext.Parties.Single(x => x.Id == id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(string save, PartyViewModel model)
+        {
+
+            gloomhavenTrackerContext.Parties.Update(model);
+            gloomhavenTrackerContext.SaveChanges();
+            
+            if (save != null)
+            {
+                return RedirectToAction("Edit", new { id = model.Id });
+            }
+            return RedirectToAction("Detail", new { id = model.Id });
+        }
     }
 }
