@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GloomhavenTracker.Models.DatabaseModels
 {
+    [Table("Party")]
     public class Party
     {
         public int Id { get; set; }

@@ -1,12 +1,12 @@
-@using GloomhavenTracker.Models.ViewModels
-@model List<PartyViewModel>
+@using GloomhavenTracker.Models.DatabaseModels
+@model List<Party>
 @{
     ViewData["Title"] = "Party";
 }
 
 <div class="text-center">
     <h1 class="display-4">List of Parties</h1>
-    <table class="table table-bordered table-responsive table-hover">  
+    <table class="table table-bordered table-hover">  
         <tr>  
             <th>Party Name</th>   
             <th>Actions</th>   
@@ -18,8 +18,7 @@
                     @Html.ActionLink(d.Name, "Detail", new { id = d.Id })
                 </td> 
                 <td>
-                    <div>@Html.ActionLink("Delete", "Delete", new { id = d.Id })</div>
-                    <div>@Html.ActionLink("Edit", "Edit", new { id = d.Id})</div>
+                    <div>@Html.ActionLink("Delete", "Delete", new { id = d.Id }, new { onclick = "return confirm('Are you sure you wish to delete this article?');" }) || @Html.ActionLink("Edit", "Edit", new { id = d.Id})</div>
                 </td> 
             </tr>  
         }  

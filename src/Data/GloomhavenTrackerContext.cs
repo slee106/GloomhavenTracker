@@ -13,7 +13,8 @@ namespace GloomhavenTracker.Data
         {
         }
 
-        public DbSet<PartyViewModel> Parties { get; set; }
+        public DbSet<Party> Parties { get; set; }
+        public DbSet<Character> Characters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

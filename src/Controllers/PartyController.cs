@@ -11,6 +11,7 @@ using GloomhavenTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using GloomhavenTracker.Models.ViewModels;
+using GloomhavenTracker.Models.DatabaseModels;
 
 namespace GloomhavenTracker.Controllers
 {
@@ -41,7 +42,7 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(PartyViewModel model)
+        public IActionResult Create(Party model)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +64,8 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            gloomhavenTrackerContext.Parties.Remove(new PartyViewModel() { Id = id });
+            gloomhavenTrackerContext.Characters.RemoveRange(gloomhavenTrackerContext.Characters.Where(x => x.Party.Id == id));
+            gloomhavenTrackerContext.Parties.Remove(new Party() { Id = id });
             gloomhavenTrackerContext.SaveChanges();
 
             return RedirectToAction("Index");
@@ -77,12 +79,12 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(string save, PartyViewModel model)
+        public IActionResult Edit(string save, Party model)
         {
 
             gloomhavenTrackerContext.Parties.Update(model);
             gloomhavenTrackerContext.SaveChanges();
-            
+
             if (save != null)
             {
                 return RedirectToAction("Edit", new { id = model.Id });

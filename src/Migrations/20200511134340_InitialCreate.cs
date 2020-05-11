@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace GloomhavenTracker.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -178,6 +178,31 @@ namespace GloomhavenTracker.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Character",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    ExperiencePoints = table.Column<int>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    Gold = table.Column<int>(nullable: false),
+                    Level = table.Column<int>(nullable: false),
+                    RetirementDate = table.Column<DateTime>(nullable: false),
+                    PartyId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Character", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Character_Party_PartyId",
+                        column: x => x.PartyId,
+                        principalTable: "Party",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -216,6 +241,11 @@ namespace GloomhavenTracker.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Character_PartyId",
+                table: "Character",
+                column: "PartyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Party_CreationUserId",
                 table: "Party",
                 column: "CreationUserId");
@@ -239,10 +269,13 @@ namespace GloomhavenTracker.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Party");
+                name: "Character");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Party");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
