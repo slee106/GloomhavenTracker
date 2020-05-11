@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using GloomhavenTracker.Models.DatabaseModels;
 using Microsoft.AspNetCore.Identity;
 
-namespace GloomhavenTracker.Models
+namespace GloomhavenTracker.Models.ViewModels
 {
-    [Table("Party")]
     public class PartyViewModel
     {
         public int Id { get; set; }

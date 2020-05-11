@@ -1,6 +1,6 @@
 using System;
 
-namespace GloomhavenTracker.Models
+namespace GloomhavenTracker.Models.ViewModels
 {
     public class ErrorViewModel
     {

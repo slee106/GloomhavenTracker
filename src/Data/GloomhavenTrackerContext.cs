@@ -1,4 +1,6 @@
 using GloomhavenTracker.Models;
+using GloomhavenTracker.Models.DatabaseModels;
+using GloomhavenTracker.Models.ViewModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

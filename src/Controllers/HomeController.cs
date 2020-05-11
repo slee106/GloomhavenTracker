@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GloomhavenTracker.Models;
 using Microsoft.AspNetCore.Authorization;
+using GloomhavenTracker.Models.ViewModels;
 
 namespace GloomhavenTracker.Controllers
 {

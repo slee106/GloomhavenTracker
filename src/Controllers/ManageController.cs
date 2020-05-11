@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GloomhavenTracker.Models;
+using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Models.ManageViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

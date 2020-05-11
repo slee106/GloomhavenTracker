@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using GloomhavenTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using GloomhavenTracker.Models.ViewModels;
 
 namespace GloomhavenTracker.Controllers
 {

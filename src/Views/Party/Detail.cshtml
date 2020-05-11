@@ -1,4 +1,4 @@
-@using GloomhavenTracker.Models
+@using GloomhavenTracker.Models.ViewModels
 @model PartyViewModel
 @{
     ViewData["Title"] = "Party";
@@ -56,6 +56,9 @@
             </td>
         </tr>
     </table>
+    <div>
+        @Html.ActionLink("Characters", "Index", "Character",new {partyId= @Model.Id})
+    </div>
     <form method="get" asp-controller="Party" asp-action="Edit">
         <input type="submit" value="Edit" />
     </form>
