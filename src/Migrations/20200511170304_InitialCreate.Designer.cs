@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GloomhavenTracker.Migrations
 {
     [DbContext(typeof(GloomhavenTrackerContext))]
-    [Migration("20200511134340_InitialCreate")]
+    [Migration("20200511170304_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,7 +107,7 @@ namespace GloomhavenTracker.Migrations
                     b.Property<int?>("PartyId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RetirementDate")
+                    b.Property<DateTime?>("RetirementDate")
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");

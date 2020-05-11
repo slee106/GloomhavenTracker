@@ -1,0 +1,66 @@
+@using GloomhavenTracker.Models.DatabaseModels
+@model Character
+@{
+    ViewData["Title"] = @Model.Name;
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Name</h1>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Level)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.ExperiencePoints)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.ExperiencePoints)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Gold)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Gold)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Party.Name, "Party Name")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Party.Name)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.CreationDate)
+            </td>
+        </tr>
+        @if (@Model.RetirementDate != null)
+        {
+            <tr>
+                <td>
+                    @Html.LabelFor(modelItem=> @Model.RetirementDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => @Model.RetirementDate)
+                </td>
+            </tr>
+        }
+    </table>
+    <div>
+        @Html.ActionLink("Edit Character", "Edit", new {id = @Model.Id}, new { @class = "btn btn-default" })
+        @Html.ActionLink("Back to Character", "Index", new {partyId = @Model.Party.Id}, new { @class = "btn btn-default" })
+    </div>
+</div>

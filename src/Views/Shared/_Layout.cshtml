@@ -6,8 +6,9 @@
     <title>@ViewData["Title"] - GloomhavenTracker</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/fonts/stylesheet.css" />
 </head>
-<body>
+<body class="bgimg" style="font-family: pirata_oneregular;">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -30,7 +31,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style="background-color: white; opacity: 0.75;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -47,3 +48,9 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<style type="text/css">
+.bgimg {
+    background-image: url('../images/gloomhaven.jpg');
+    background-size: contain;
+}
+</style>

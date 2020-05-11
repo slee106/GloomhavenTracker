@@ -1,20 +1,12 @@
 @using GloomhavenTracker.Models.DatabaseModels
 @model Party
 @{
-    ViewData["Title"] = "Party";
+    ViewData["Title"] = @Model.Name;
 }
 
 <div class="text-center">
-    <h1 class="display-4">Party</h1>
-    <table>
-        <tr>
-            <td>
-                @Html.LabelFor(modelItem=> @Model.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => @Model.Name)
-            </td>
-        </tr>
+    <h1 class="display-4">@Model.Name</h1>
+    <table class="table table-bordered table-hover">
         <tr>
             <td>
                 @Html.LabelFor(modelItem=> @Model.NumberOfPlayers)
@@ -57,12 +49,8 @@
         </tr>
     </table>
     <div>
-        @Html.ActionLink("Characters", "Index", "Character",new {partyId= @Model.Id})
+        @Html.ActionLink("Characters", "Index", "Character", new { partyId = @Model.Id }, new { @class = "btn btn-default" })
+        @Html.ActionLink("Edit", "Edit", new { partyId = @Model.Id}, new { @class = "btn btn-default" })
+        @Html.ActionLink("Back to Parties", "Index", new { partyId = @Model.Id}, new { @class = "btn btn-default" })
     </div>
-    <form method="get" asp-controller="Party" asp-action="Edit">
-        <input type="submit" value="Edit" />
-    </form>
-    <form method="get" asp-controller="Party" asp-action="Index">
-        <input type="submit" value="Back to Parties" />
-    </form>
 </div>

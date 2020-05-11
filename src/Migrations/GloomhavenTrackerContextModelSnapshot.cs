@@ -105,7 +105,7 @@ namespace GloomhavenTracker.Migrations
                     b.Property<int?>("PartyId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RetirementDate")
+                    b.Property<DateTime?>("RetirementDate")
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");

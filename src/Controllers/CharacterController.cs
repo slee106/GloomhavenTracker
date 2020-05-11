@@ -67,7 +67,65 @@ namespace GloomhavenTracker.Controllers
             });
             gloomhavenTrackerContext.SaveChanges();
 
-            return RedirectToAction("Index", "Party");
+            return RedirectToAction("Index", new { partyId = character.PartyId });
+        }
+
+        [HttpGet]
+        public IActionResult Detail(int id)
+        {
+            var model = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id, int partyId)
+        {
+            gloomhavenTrackerContext.Characters.Remove(new Character() { Id = id });
+            gloomhavenTrackerContext.SaveChanges();
+
+            return RedirectToAction("Index", new { partyId = partyId });
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var model = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id);
+            return View(new CharacterEditViewModel()
+            {
+                CreationDate = model.CreationDate,
+                ExperiencePoints = model.ExperiencePoints,
+                Gold = model.Gold,
+                Id = model.Id,
+                Level = model.Level,
+                Name = model.Name,
+                Party = model.Party,
+                RetirementDate = model.RetirementDate,
+                Retired = model.RetirementDate != null
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(string save, CharacterEditViewModel model)
+        {
+
+            gloomhavenTrackerContext.Characters.Update(new Character()
+            {
+                Id = model.Id,
+                ExperiencePoints = model.ExperiencePoints,
+                Gold = model.Gold,
+                Level = model.Level,
+                Name = model.Name,
+                RetirementDate = model.Retired ? DateTime.Today as DateTime? : null,
+                CreationDate = model.CreationDate
+            });
+            gloomhavenTrackerContext.SaveChanges();
+
+            if (save != null)
+            {
+                return RedirectToAction("Edit", new { id = model.Id });
+            }
+            return RedirectToAction("Detail", new { id = model.Id });
         }
     }
 }

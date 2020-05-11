@@ -189,7 +189,7 @@ namespace GloomhavenTracker.Migrations
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Gold = table.Column<int>(nullable: false),
                     Level = table.Column<int>(nullable: false),
-                    RetirementDate = table.Column<DateTime>(nullable: false),
+                    RetirementDate = table.Column<DateTime>(nullable: true),
                     PartyId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

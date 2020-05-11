@@ -69,16 +69,7 @@ namespace GloomhavenTracker
             })
             .AddIdentityCookies(o => { });
 
-            services.AddMvc(
-            //         options =>
-            //         {
-            //             var policy = new AuthorizationPolicyBuilder()
-            //                 .RequireAuthenticatedUser()
-            //                 .Build();
-            //             options.Filters.Add(new AuthorizeFilter(policy));
-            //     // ...
-            // }
-            );
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
