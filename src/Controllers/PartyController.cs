@@ -31,24 +31,64 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var parties = gloomhavenTrackerContext.Parties.ToList();
+            var parties = (from P in gloomhavenTrackerContext.Parties
+                          join PU in gloomhavenTrackerContext.PartyUsers
+                            on P.Id equals PU.PartyId
+                          join U in gloomhavenTrackerContext.Users
+                            on PU.UserId equals U.Id
+                          where U.UserName == User.Identity.Name
+                          select P).ToList();
+
             return View(parties);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var listOfUsers = gloomhavenTrackerContext.Users.ToList();
+            var partyCreateViewModel = new PartyCreateViewModel()
+            {
+                Users = new List<ApplicationUserSelected>()
+            };
+            foreach (var user in listOfUsers)
+            {
+                partyCreateViewModel.Users.Add(new ApplicationUserSelected()
+                {
+                    Selected = false,
+                    UserId = user.Id,
+                    Username = user.UserName
+                });
+            }
+            return View(partyCreateViewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(Party model)
+        public IActionResult Create(PartyCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                model.CreationUser = gloomhavenTrackerContext.Users.Single(x => x.UserName == User.Identity.Name);
-                gloomhavenTrackerContext.Parties.Add(model);
+                var party = new Party()
+                {
+                    DateOfCreation = model.DateOfCreation,
+                    Name = model.Name,
+                    Notes = model.Notes,
+                    NumberOfPlayers = model.NumberOfPlayers,
+                    Prosperity = model.Prosperity,
+                    Reputation = model.Reputation,
+                    CreationUser = gloomhavenTrackerContext.Users.Single(x => x.UserName == User.Identity.Name)
+                };
+                gloomhavenTrackerContext.Parties.Add(party);
                 gloomhavenTrackerContext.SaveChanges();
+                foreach (var user in model.Users.Where(x => x.Selected == true))
+                {
+                    gloomhavenTrackerContext.PartyUsers.Add(new PartyUser()
+                    {
+                        PartyId = party.Id,
+                        UserId = user.UserId
+                    });
+                }
+                gloomhavenTrackerContext.SaveChanges();
+
             }
             return RedirectToAction("Index");
         }

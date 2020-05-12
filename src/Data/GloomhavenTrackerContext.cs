@@ -15,10 +15,11 @@ namespace GloomhavenTracker.Data
 
         public DbSet<Party> Parties { get; set; }
         public DbSet<Character> Characters { get; set; }
+        public DbSet<PartyUser> PartyUsers {get;set;}
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
     }
+}
 }

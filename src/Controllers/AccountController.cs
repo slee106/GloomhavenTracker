@@ -103,7 +103,7 @@ namespace GloomhavenTracker.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = "A@a.a"};
+                var user = new ApplicationUser { UserName = model.Username, Email = "A1@a.a"};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

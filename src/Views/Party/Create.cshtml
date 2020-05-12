@@ -1,5 +1,5 @@
-@using GloomhavenTracker.Models.DatabaseModels
-@model Party
+@using GloomhavenTracker.Models.ViewModels
+@model PartyCreateViewModel
 @{
     ViewData["Title"] = "Create Party";
 }
@@ -51,6 +51,24 @@
             <input asp-for="Prosperity" class="form-control" />
             <span asp-validation-for="Prosperity" class="text-danger"></span>
         </div>
+    </div>
+    <div>
+        <label asp-for="Users" class="col-md-2 control-label"></label>
+        <table>
+                @for (int i = 0; i < Model.Users.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(x => x.Users[i].Selected)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.Users[i].Username)
+                            @Html.HiddenFor(x => x.Users[i].UserId)
+                            @Model.Users[i].Username
+                        </td>
+                    </tr>
+                }
+            </table>
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
