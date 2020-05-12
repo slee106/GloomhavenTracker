@@ -4,10 +4,11 @@ using GloomhavenTracker.Models.DatabaseModels;
 
 namespace GloomhavenTracker.Models
 {
-    public class PartyCreateViewModel : Party
+    public class PartyCreateViewModel
     {
         [Display(Name = "Users in party")]
         public List<ApplicationUserSelected> Users { get; set; }
+        public Party Party { get; set; }
     }
 
     public class ApplicationUserSelected

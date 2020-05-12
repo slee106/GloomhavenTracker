@@ -54,20 +54,12 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CharacterCreateViewModel character)
+        public IActionResult Create(CharacterCreateViewModel model)
         {
-            gloomhavenTrackerContext.Characters.Add(new Character()
-            {
-                Name = character.Name,
-                CreationDate = character.CreationDate,
-                ExperiencePoints = character.ExperiencePoints,
-                Gold = character.Gold,
-                Level = character.Level,
-                Party = gloomhavenTrackerContext.Parties.Single(x => x.Id == character.PartyId)
-            });
+            gloomhavenTrackerContext.Characters.Add(model.Character);
             gloomhavenTrackerContext.SaveChanges();
 
-            return RedirectToAction("Index", new { partyId = character.PartyId });
+            return RedirectToAction("Index", new { partyId = model.PartyId });
         }
 
         [HttpGet]
@@ -93,14 +85,7 @@ namespace GloomhavenTracker.Controllers
             var model = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id);
             return View(new CharacterEditViewModel()
             {
-                CreationDate = model.CreationDate,
-                ExperiencePoints = model.ExperiencePoints,
-                Gold = model.Gold,
-                Id = model.Id,
-                Level = model.Level,
-                Name = model.Name,
-                Party = model.Party,
-                RetirementDate = model.RetirementDate,
+                Character = model,
                 Retired = model.RetirementDate != null
             });
         }
@@ -108,24 +93,15 @@ namespace GloomhavenTracker.Controllers
         [HttpPost]
         public IActionResult Edit(string save, CharacterEditViewModel model)
         {
-
-            gloomhavenTrackerContext.Characters.Update(new Character()
-            {
-                Id = model.Id,
-                ExperiencePoints = model.ExperiencePoints,
-                Gold = model.Gold,
-                Level = model.Level,
-                Name = model.Name,
-                RetirementDate = model.Retired ? DateTime.Today as DateTime? : null,
-                CreationDate = model.CreationDate
-            });
+            model.Character.RetirementDate = model.Retired ? DateTime.Today as DateTime? : null;
+            gloomhavenTrackerContext.Characters.Update(model.Character);
             gloomhavenTrackerContext.SaveChanges();
 
             if (save != null)
             {
-                return RedirectToAction("Edit", new { id = model.Id });
+                return RedirectToAction("Edit", new { id = model.Character.Id });
             }
-            return RedirectToAction("Detail", new { id = model.Id });
+            return RedirectToAction("Detail", new { id = model.Character.Id });
         }
     }
 }

@@ -32,12 +32,12 @@ namespace GloomhavenTracker.Controllers
         public IActionResult Index()
         {
             var parties = (from P in gloomhavenTrackerContext.Parties
-                          join PU in gloomhavenTrackerContext.PartyUsers
-                            on P.Id equals PU.PartyId
-                          join U in gloomhavenTrackerContext.Users
-                            on PU.UserId equals U.Id
-                          where U.UserName == User.Identity.Name
-                          select P).ToList();
+                           join PU in gloomhavenTrackerContext.PartyUsers
+                             on P.Id equals PU.PartyId
+                           join U in gloomhavenTrackerContext.Users
+                             on PU.UserId equals U.Id
+                           where U.UserName == User.Identity.Name
+                           select P).ToList();
 
             return View(parties);
         }
@@ -67,16 +67,7 @@ namespace GloomhavenTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                var party = new Party()
-                {
-                    DateOfCreation = model.DateOfCreation,
-                    Name = model.Name,
-                    Notes = model.Notes,
-                    NumberOfPlayers = model.NumberOfPlayers,
-                    Prosperity = model.Prosperity,
-                    Reputation = model.Reputation,
-                    CreationUser = gloomhavenTrackerContext.Users.Single(x => x.UserName == User.Identity.Name)
-                };
+                var party = model.Party;
                 gloomhavenTrackerContext.Parties.Add(party);
                 gloomhavenTrackerContext.SaveChanges();
                 foreach (var user in model.Users.Where(x => x.Selected == true))
@@ -105,6 +96,7 @@ namespace GloomhavenTracker.Controllers
         public IActionResult Delete(int id)
         {
             gloomhavenTrackerContext.Characters.RemoveRange(gloomhavenTrackerContext.Characters.Where(x => x.Party.Id == id));
+            gloomhavenTrackerContext.PartyUsers.RemoveRange(gloomhavenTrackerContext.PartyUsers.Where(x=>x.PartyId == id));
             gloomhavenTrackerContext.Parties.Remove(new Party() { Id = id });
             gloomhavenTrackerContext.SaveChanges();
 

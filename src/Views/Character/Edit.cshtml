@@ -9,33 +9,33 @@
 {
     @Html.AntiForgeryToken()    
     <div class="form-horizontal">
-        <h4>@Model.Name</h4>
+        <h4>@Model.Character.Name</h4>
         <hr />
         @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.Party)
-        @Html.HiddenFor(model => model.CreationDate)
-        @Html.HiddenFor(model => model.RetirementDate)
+        @Html.HiddenFor(model => model.Character.Id)
+        @Html.HiddenFor(model => model.Character.Party)
+        @Html.HiddenFor(model => model.Character.CreationDate)
+        @Html.HiddenFor(model => model.Character.RetirementDate)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Level, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Character.Level, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Level, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Level)
+                @Html.EditorFor(model => model.Character.Level, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Character.Level)
             </div>
         </div>       
         <div class="form-group">
-            @Html.LabelFor(model => model.ExperiencePoints, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Character.ExperiencePoints, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ExperiencePoints, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ExperiencePoints)
+                @Html.EditorFor(model => model.Character.ExperiencePoints, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Character.ExperiencePoints)
             </div>
         </div>       
         <div class="form-group">
-            @Html.LabelFor(model => model.Gold, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Character.Gold, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Gold, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Gold)
+                @Html.EditorFor(model => model.Character.Gold, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Character.Gold)
             </div>
         </div>       
         <div class="form-group">
@@ -43,12 +43,12 @@
             <div class="col-md-10">
                 @Html.CheckBoxFor(model => model.Retired, new { htmlAttributes = new { @class = "form-control" } })
             </div>
-        </div>   
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" name="save" value="Save" class="btn btn-default" />
                 <input type="submit" value="Save & Exit" class="btn btn-default" />
-                @Html.ActionLink("Back to Characters", "Index", new { partyId = @Model.Party.Id }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Back to Characters", "Index", new { partyId = @Model.Character.Party.Id }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>

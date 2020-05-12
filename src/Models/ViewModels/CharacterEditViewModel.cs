@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GloomhavenTracker.Models.ViewModels
 {
-    public class CharacterEditViewModel : Character
+    public class CharacterEditViewModel
     {
+        public Character Character { get; set; }
         public bool Retired { get; set; }
     }
 }
