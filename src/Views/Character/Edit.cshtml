@@ -13,7 +13,7 @@
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Character.Id)
-        @Html.HiddenFor(model => model.Character.Party)
+        @Html.HiddenFor(model => model.Character.PartyId)
         @Html.HiddenFor(model => model.Character.CreationDate)
         @Html.HiddenFor(model => model.Character.RetirementDate)
 
@@ -48,7 +48,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" name="save" value="Save" class="btn btn-default" />
                 <input type="submit" value="Save & Exit" class="btn btn-default" />
-                @Html.ActionLink("Back to Characters", "Index", new { partyId = @Model.Character.Party.Id }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Back to Characters", "Index", new { partyId = @Model.Character.PartyId }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>

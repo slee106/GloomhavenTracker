@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,14 +13,16 @@ namespace GloomhavenTracker.Models.DatabaseModels
         public int ExperiencePoints { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString="{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime CreationDate { get; set; }
         public int Gold { get; set; }
         public int Level { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString="{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? RetirementDate { get; set; }
+        public int PartyId { get; set; }
         public Party Party { get; set; }
+        public ICollection<CharacterItem> CharacterItems { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace GloomhavenTracker.Controllers
         public IActionResult Create(int partyId)
         {
 
-            var model = new CharacterCreateViewModel()
+            var model = new Character()
             {
                 PartyId = partyId
             };
@@ -54,9 +54,9 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CharacterCreateViewModel model)
+        public IActionResult Create(Character model)
         {
-            gloomhavenTrackerContext.Characters.Add(model.Character);
+            gloomhavenTrackerContext.Characters.Update(model);
             gloomhavenTrackerContext.SaveChanges();
 
             return RedirectToAction("Index", new { partyId = model.PartyId });

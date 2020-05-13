@@ -15,11 +15,41 @@ namespace GloomhavenTracker.Data
 
         public DbSet<Party> Parties { get; set; }
         public DbSet<Character> Characters { get; set; }
-        public DbSet<PartyUser> PartyUsers {get;set;}
+        public DbSet<Item> Items { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<PartyUser>()
+                   .HasKey(pu => new { pu.PartyId, pu.UserId });
 
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
+            builder.Entity<PartyUser>()
+                   .HasOne(pu => pu.Party)
+                   .WithMany(p => p.PartyUsers)
+                   .HasForeignKey(pu => pu.PartyId);
+
+            builder.Entity<PartyUser>()
+                   .HasOne(pu => pu.User)
+                   .WithMany(u => u.PartyUsers)
+                   .HasForeignKey(pu => pu.UserId);
+
+            builder.Entity<Character>()
+                   .HasOne(c => c.Party)
+                   .WithMany(p => p.Characters)
+                   .HasForeignKey(c => c.PartyId);
+
+            builder.Entity<CharacterItem>()
+                   .HasKey(ci => new { ci.CharacterId, ci.ItemId });
+
+            builder.Entity<CharacterItem>()
+                   .HasOne(ci => ci.Character)
+                   .WithMany(c => c.CharacterItems)
+                   .HasForeignKey(ci => ci.CharacterId);
+
+            builder.Entity<CharacterItem>()
+                   .HasOne(ci => ci.Item)
+                   .WithMany(i => i.CharacterItems)
+                   .HasForeignKey(ci => ci.ItemId);
+
+            base.OnModelCreating(builder);
+        }
     }
-}
 }

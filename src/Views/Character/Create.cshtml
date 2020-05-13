@@ -1,6 +1,6 @@
-@using GloomhavenTracker.Models.ViewModels
+@using GloomhavenTracker.Models.DatabaseModels
 @inject GloomhavenTracker.Data.GloomhavenTrackerContext context;
-@model CharacterCreateViewModel
+@model Character
 @{
     ViewData["Title"] = "Create Character";
 }
@@ -12,45 +12,45 @@
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="Character.Name" class="col-md-2 control-label"></label>
+        <label asp-for="Name" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Character.Name" class="form-control" />
-            <span asp-validation-for="Character.Name" class="text-danger"></span>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Character.Level" class="col-md-2 control-label"></label>
+        <label asp-for="Level" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Character.Level" class="form-control" />
-            <span asp-validation-for="Character.Level" class="text-danger"></span>
+            <input asp-for="Level" class="form-control" />
+            <span asp-validation-for="Level" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Character.ExperiencePoints" class="col-md-2 control-label"></label>
+        <label asp-for="ExperiencePoints" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Character.ExperiencePoints" class="form-control" />
-            <span asp-validation-for="Character.ExperiencePoints" class="text-danger"></span>
+            <input asp-for="ExperiencePoints" class="form-control" />
+            <span asp-validation-for="ExperiencePoints" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Character.Gold" class="col-md-2 control-label"></label>
+        <label asp-for="Gold" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Character.Gold" class="form-control" />
-            <span asp-validation-for="Character.Gold" class="text-danger"></span>
+            <input asp-for="Gold" class="form-control" />
+            <span asp-validation-for="Gold" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Character.CreationDate" class="col-md-2 control-label"></label>
+        <label asp-for="CreationDate" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input type="date" asp-for="Character.CreationDate" class="form-control" />
-            <span asp-validation-for="Character.CreationDate" class="text-danger"></span>
+            <input type="date" asp-for="CreationDate" class="form-control" />
+            <span asp-validation-for="CreationDate" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Character.RetirementDate" class="col-md-2 control-label"></label>
+        <label asp-for="RetirementDate" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input type="date" asp-for="Character.RetirementDate" class="form-control" />
-            <span asp-validation-for="Character.RetirementDate" class="text-danger"></span>
+            <input type="date" asp-for="RetirementDate" class="form-control" />
+            <span asp-validation-for="RetirementDate" class="text-danger"></span>
         </div>
     </div>
     <div style="visibility: hidden; height:0px">

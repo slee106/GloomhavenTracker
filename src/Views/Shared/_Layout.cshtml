@@ -10,31 +10,45 @@
 </head>
 <body class="bgimg" style="font-family: pirata_oneregular;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GloomhavenTracker</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Party" asp-action="Index">Parties</a>
-                        </li>
-                    </ul>
-                </div>
+                <table style="background-image: url('/images/scroll_inner.png');background-size: 100% 100%;">
+                    <tr>
+                        <td>
+                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GloomhavenTracker</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </td>
+                        <td>
+                            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                <ul class="navbar-nav flex-grow-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Party" asp-action="Index">Parties</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>
-    <div class="container" style="background-color: white; opacity: 0.75;">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="container" >
+        <div style="width: 100%; height: 158px; background-image: url('/images/scroll_top.png'); background-size: 100% 100%;">
+        </div>
+            <div style="background-image: url('/images/scroll_middle.png'); background-size: 100% 100%;">
+                <main role="main" class="pb-3" style="padding-left: 10%; padding-right: 10%;">
+                    @RenderBody()
+                </main>
+            </div>
+        <div style="width: 100%; height: 180px; background-image: url('/images/scroll_bottom.png'); background-size: 100% 100%;">
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
@@ -50,7 +64,7 @@
 </html>
 <style type="text/css">
 .bgimg {
-    background-image: url('../images/gloomhaven.jpg');
-    background-size: contain;
+    background-image: url('/images/gloomhaven.jpg');
+    background-size: 100% 100%
 }
 </style>

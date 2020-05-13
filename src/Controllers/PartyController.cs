@@ -31,13 +31,11 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var parties = (from P in gloomhavenTrackerContext.Parties
-                           join PU in gloomhavenTrackerContext.PartyUsers
-                             on P.Id equals PU.PartyId
-                           join U in gloomhavenTrackerContext.Users
-                             on PU.UserId equals U.Id
-                           where U.UserName == User.Identity.Name
-                           select P).ToList();
+
+            var parties = gloomhavenTrackerContext.Parties.Include(x => x.PartyUsers)
+                                                          .ThenInclude(x => x.User)
+                                                          .Where(x => x.PartyUsers.Any(x => x.User.UserName == User.Identity.Name))
+                                                          .ToList();
 
             return View(parties);
         }
@@ -68,18 +66,17 @@ namespace GloomhavenTracker.Controllers
             if (ModelState.IsValid)
             {
                 var party = model.Party;
-                gloomhavenTrackerContext.Parties.Add(party);
-                gloomhavenTrackerContext.SaveChanges();
+                var listOfPartyUsers = new List<PartyUser>();
                 foreach (var user in model.Users.Where(x => x.Selected == true))
                 {
-                    gloomhavenTrackerContext.PartyUsers.Add(new PartyUser()
+                    listOfPartyUsers.Add(new PartyUser()
                     {
-                        PartyId = party.Id,
-                        UserId = user.UserId
+                        User = gloomhavenTrackerContext.Users.Single(x => x.Id == user.UserId)
                     });
                 }
+                party.PartyUsers = listOfPartyUsers;
+                gloomhavenTrackerContext.Parties.Add(party);
                 gloomhavenTrackerContext.SaveChanges();
-
             }
             return RedirectToAction("Index");
         }
@@ -95,8 +92,6 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            gloomhavenTrackerContext.Characters.RemoveRange(gloomhavenTrackerContext.Characters.Where(x => x.Party.Id == id));
-            gloomhavenTrackerContext.PartyUsers.RemoveRange(gloomhavenTrackerContext.PartyUsers.Where(x=>x.PartyId == id));
             gloomhavenTrackerContext.Parties.Remove(new Party() { Id = id });
             gloomhavenTrackerContext.SaveChanges();
 

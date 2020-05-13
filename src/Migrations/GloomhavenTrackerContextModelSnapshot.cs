@@ -33,10 +33,10 @@ namespace GloomhavenTracker.Migrations
                         .HasColumnType("varchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("EmailConfirmed")
+                    b.Property<short>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("LockoutEnabled")
+                    b.Property<short>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
@@ -56,13 +56,13 @@ namespace GloomhavenTracker.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
+                    b.Property<short>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
-                    b.Property<bool>("TwoFactorEnabled")
+                    b.Property<short>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
@@ -102,7 +102,7 @@ namespace GloomhavenTracker.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int?>("PartyId")
+                    b.Property<int>("PartyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("RetirementDate")
@@ -113,6 +113,44 @@ namespace GloomhavenTracker.Migrations
                     b.HasIndex("PartyId");
 
                     b.ToTable("Character");
+                });
+
+            modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.CharacterItem", b =>
+                {
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CharacterId", "ItemId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("CharacterItem");
+                });
+
+            modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<short>("Available")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Cost")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int>("NumberAvailable")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Item");
                 });
 
             modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.Party", b =>
@@ -151,19 +189,17 @@ namespace GloomhavenTracker.Migrations
 
             modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.PartyUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
                     b.Property<int>("PartyId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(767)");
 
-                    b.HasKey("Id");
+                    b.HasKey("PartyId", "UserId");
 
-                    b.ToTable("PartyUsers");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PartyUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -297,8 +333,25 @@ namespace GloomhavenTracker.Migrations
             modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.Character", b =>
                 {
                     b.HasOne("GloomhavenTracker.Models.DatabaseModels.Party", "Party")
-                        .WithMany()
-                        .HasForeignKey("PartyId");
+                        .WithMany("Characters")
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.CharacterItem", b =>
+                {
+                    b.HasOne("GloomhavenTracker.Models.DatabaseModels.Character", "Character")
+                        .WithMany("CharacterItems")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GloomhavenTracker.Models.DatabaseModels.Item", "Item")
+                        .WithMany("CharacterItems")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.Party", b =>
@@ -306,6 +359,21 @@ namespace GloomhavenTracker.Migrations
                     b.HasOne("GloomhavenTracker.Models.DatabaseModels.ApplicationUser", "CreationUser")
                         .WithMany()
                         .HasForeignKey("CreationUserId");
+                });
+
+            modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.PartyUser", b =>
+                {
+                    b.HasOne("GloomhavenTracker.Models.DatabaseModels.Party", "Party")
+                        .WithMany("PartyUsers")
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GloomhavenTracker.Models.DatabaseModels.ApplicationUser", "User")
+                        .WithMany("PartyUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

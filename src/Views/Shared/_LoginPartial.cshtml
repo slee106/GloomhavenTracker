@@ -3,7 +3,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
+<ul class="navbar-nav" style="background-image: url('/images/scroll_inner.png');background-size: 100% 100%;">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">

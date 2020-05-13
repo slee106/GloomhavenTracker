@@ -52,7 +52,30 @@
             <span asp-validation-for="Party.Prosperity" class="text-danger"></span>
         </div>
     </div>
-    <div>
+    <div class="form-group">
+        <label asp-for="Users" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <div class="checkbox">
+                <table>
+                @for (int i = 0; i < Model.Users.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(x => x.Users[i].Selected)
+                        </td>
+                        <td>
+                            @Html.HiddenFor(x => x.Users[i].Username)
+                            @Html.HiddenFor(x => x.Users[i].UserId)
+                            @Model.Users[i].Username
+                        </td>
+                    </tr>
+                }
+                </table>
+                </label>
+            </div>
+        </div>
+    </div>
+    @*<div class="form-group">
         <label asp-for="Users" class="col-md-2 control-label"></label>
         <table>
                 @for (int i = 0; i < Model.Users.Count; i++)
@@ -69,7 +92,7 @@
                     </tr>
                 }
             </table>
-    </div>
+    </div> *@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <button type="submit" class="btn btn-default">Create!</button>

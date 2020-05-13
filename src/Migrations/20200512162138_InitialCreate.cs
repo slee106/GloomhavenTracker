@@ -48,6 +48,22 @@ namespace GloomhavenTracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Item",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Cost = table.Column<int>(nullable: false),
+                    NumberAvailable = table.Column<int>(nullable: false),
+                    Available = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Item", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -190,7 +206,7 @@ namespace GloomhavenTracker.Migrations
                     Gold = table.Column<int>(nullable: false),
                     Level = table.Column<int>(nullable: false),
                     RetirementDate = table.Column<DateTime>(nullable: true),
-                    PartyId = table.Column<int>(nullable: true)
+                    PartyId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,7 +216,55 @@ namespace GloomhavenTracker.Migrations
                         column: x => x.PartyId,
                         principalTable: "Party",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PartyUser",
+                columns: table => new
+                {
+                    PartyId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartyUser", x => new { x.PartyId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_PartyUser_Party_PartyId",
+                        column: x => x.PartyId,
+                        principalTable: "Party",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PartyUser_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CharacterItem",
+                columns: table => new
+                {
+                    CharacterId = table.Column<int>(nullable: false),
+                    ItemId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CharacterItem", x => new { x.CharacterId, x.ItemId });
+                    table.ForeignKey(
+                        name: "FK_CharacterItem_Character_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Character",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CharacterItem_Item_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Item",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -246,9 +310,19 @@ namespace GloomhavenTracker.Migrations
                 column: "PartyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CharacterItem_ItemId",
+                table: "CharacterItem",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Party_CreationUserId",
                 table: "Party",
                 column: "CreationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartyUser_UserId",
+                table: "PartyUser",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -269,10 +343,19 @@ namespace GloomhavenTracker.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Character");
+                name: "CharacterItem");
+
+            migrationBuilder.DropTable(
+                name: "PartyUser");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Character");
+
+            migrationBuilder.DropTable(
+                name: "Item");
 
             migrationBuilder.DropTable(
                 name: "Party");
