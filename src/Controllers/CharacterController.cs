@@ -59,7 +59,7 @@ namespace GloomhavenTracker.Controllers
             gloomhavenTrackerContext.Characters.Update(model);
             gloomhavenTrackerContext.SaveChanges();
 
-            return RedirectToAction("Index", new { partyId = model.PartyId });
+            return RedirectToAction("Detail", "Party", new { id = model.PartyId });
         }
 
         [HttpGet]
@@ -96,13 +96,13 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(string save, CharacterEditViewModel model)
+        public IActionResult Edit(CharacterEditViewModel model, bool stayOnSamePage)
         {
             model.Character.RetirementDate = model.Retired ? DateTime.Today as DateTime? : null;
             gloomhavenTrackerContext.Characters.Update(model.Character);
             gloomhavenTrackerContext.SaveChanges();
 
-            if (save != null)
+            if (stayOnSamePage)
             {
                 return RedirectToAction("Edit", new { id = model.Character.Id });
             }

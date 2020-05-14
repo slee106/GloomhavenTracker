@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using GloomhavenTracker.Models;
 using GloomhavenTracker.Models.DatabaseModels;
+using GloomhavenTracker.Services;
 
 namespace GloomhavenTracker
 {
@@ -31,6 +32,8 @@ namespace GloomhavenTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddTransient<IItemService, ItemService>();
             // that's where you tell that you want to use MySQL
             services.AddDbContext<GloomhavenTrackerContext>(
                 options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection"))

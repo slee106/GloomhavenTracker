@@ -7,6 +7,10 @@
 
 <div class="text-center">
     <h1 class="display-4">Shop</h1>
+    @if (@Model.PartyDiscount != 0)
+    {
+        <h3 style="text-align: left;">Shop Discount: @Model.PartyDiscount</h3>
+    }
     <table class="table table-bordered table-hover">  
         <tr>  
             <th>Item name</th>   
@@ -24,7 +28,11 @@
                     @item.Description
                 </td> 
                 <td>
-                    @item.Cost
+                    @if (@Model.PartyDiscount != 0)
+                    {
+                        <span style="text-decoration: line-through; text-decoration-color: red;">@item.Cost   </span>
+                    }
+                    <span>@(@item.Cost - @Model.PartyDiscount)</span>
                 </td> 
                 <td>
                     @item.NumberAvailable
@@ -35,4 +43,7 @@
             </tr>  
         }  
     </table>
+</div>
+<div>
+    @Html.ActionLink("Return to Character", "Detail","Character", new { id = Model.CharacterId }, new { @class = "btn btn-default"})
 </div>

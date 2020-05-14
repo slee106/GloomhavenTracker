@@ -7,5 +7,6 @@ namespace GloomhavenTracker.Models.ViewModels
     {
         public List<Item> Items { get; set; }
         public int CharacterId { get; set; }
+        public int PartyDiscount { get; set; }
     }
 }

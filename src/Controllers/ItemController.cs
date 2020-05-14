@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using GloomhavenTracker.Models.ViewModels;
 using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Data;
+using GloomhavenTracker.Services;
 
 namespace GloomhavenTracker.Controllers
 {
@@ -19,20 +20,24 @@ namespace GloomhavenTracker.Controllers
     {
         private readonly ILogger<ItemController> _logger;
         private readonly GloomhavenTrackerContext gloomhavenTrackerContext;
+        private readonly IItemService itemService;
 
-        public ItemController(ILogger<ItemController> logger, GloomhavenTrackerContext gloomhavenTrackerContext)
+        public ItemController(ILogger<ItemController> logger, GloomhavenTrackerContext gloomhavenTrackerContext, IItemService itemService)
         {
             _logger = logger;
             this.gloomhavenTrackerContext = gloomhavenTrackerContext;
+            this.itemService = itemService;
         }
 
         [HttpGet]
         public IActionResult Index(int characterId)
         {
+            var reputation = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == characterId).Party.Reputation;
             var viewModel = new ItemIndexViewModel()
             {
                 CharacterId = characterId,
-                Items = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Where(x => (x.CharacterItems.Any(x => x.CharacterId != characterId) || x.CharacterItems.Count == 0) && x.Available).ToList()
+                Items = itemService.GetItemsWithAdjustedAmounts(gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Where(x => (x.CharacterItems.Any(x => x.CharacterId != characterId) || x.CharacterItems.Count == 0) && x.Available).ToList()),
+                PartyDiscount = itemService.CalculateShopDiscount(reputation)
             };
             return View(viewModel);
         }

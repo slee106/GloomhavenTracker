@@ -48,8 +48,24 @@
             </td>
         </tr>
     </table>
+    @if (@Model.Characters != null)
+    {
+        <h3 style="text-align: left;">Characters in Party</h3>
+        <table>
+            @foreach (var character in @Model.Characters)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(@character.Name, "Detail", "Character", new { id = @character.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+        <div style="height:40px;">
+            @Html.ActionLink("Create Character", "Create", "Character", new { partyId = @Model.Id}, new { @class = "btn btn-default", @style="float: left;" })
+        </div>
+    }
     <div>
-        @Html.ActionLink("Characters", "Index", "Character", new { partyId = @Model.Id }, new { @class = "btn btn-default" })
         @Html.ActionLink("Edit", "Edit", new { id = @Model.Id}, new { @class = "btn btn-default" })
         @Html.ActionLink("Back to Parties", "Index", new { }, new { @class = "btn btn-default" })
     </div>
