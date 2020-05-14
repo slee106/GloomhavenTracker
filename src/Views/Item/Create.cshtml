@@ -1,0 +1,50 @@
+@using GloomhavenTracker.Models.DatabaseModels
+@inject GloomhavenTracker.Data.GloomhavenTrackerContext context;
+@model Item
+@{
+    ViewData["Title"] = "Create Item";
+}
+
+<h1>@ViewData["Title"].</h1>
+
+<form asp-controller="Item" asp-action="Create" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+    <h4>Create a new item</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Cost" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Cost" class="form-control" />
+            <span asp-validation-for="Cost" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumberAvailable" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="NumberAvailable" class="form-control" />
+            <span asp-validation-for="NumberAvailable" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Create!</button>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

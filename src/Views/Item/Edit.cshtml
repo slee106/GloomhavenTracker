@@ -1,0 +1,55 @@
+@using GloomhavenTracker.Models.ViewModels
+@model CharacterEditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>Edit</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()    
+    <div class="form-horizontal">
+        <h4>@Model.Character.Name</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Character.Id)
+        @Html.HiddenFor(model => model.Character.PartyId)
+        @Html.HiddenFor(model => model.Character.CreationDate)
+        @Html.HiddenFor(model => model.Character.RetirementDate)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Character.Level, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Character.Level, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Character.Level)
+            </div>
+        </div>       
+        <div class="form-group">
+            @Html.LabelFor(model => model.Character.ExperiencePoints, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Character.ExperiencePoints, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Character.ExperiencePoints)
+            </div>
+        </div>       
+        <div class="form-group">
+            @Html.LabelFor(model => model.Character.Gold, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Character.Gold, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Character.Gold)
+            </div>
+        </div>       
+        <div class="form-group">
+            @Html.LabelFor(model => model.Retired, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.Retired, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" name="save" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save & Exit" class="btn btn-default" />
+                @Html.ActionLink("Back to Characters", "Index", new { partyId = @Model.Character.PartyId }, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,38 @@
+@using GloomhavenTracker.Models.ViewModels
+@model ItemIndexViewModel
+
+@{
+    ViewData["Title"] = "Items";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Shop</h1>
+    <table class="table table-bordered table-hover">  
+        <tr>  
+            <th>Item name</th>   
+            <th>Description</th>   
+            <th>Cost</th>
+            <th>Number Available</th>
+        </tr>  
+        @foreach (var item in Model.Items)  
+        {  
+            <tr> 
+                <td>
+                    @item.Name
+                </td> 
+                <td>
+                    @item.Description
+                </td> 
+                <td>
+                    @item.Cost
+                </td> 
+                <td>
+                    @item.NumberAvailable
+                </td> 
+                <td>
+                    @Html.ActionLink("Add to Character", "AddItemToCharacter", new { characterId = Model.CharacterId, itemId = @item.Id })
+                </td> 
+            </tr>  
+        }  
+    </table>
+</div>

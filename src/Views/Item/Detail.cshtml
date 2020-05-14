@@ -1,0 +1,38 @@
+@using GloomhavenTracker.Models.ViewModels
+@model ItemDetailViewModel
+@{
+    ViewData["Title"] = @Model.Item.Name;
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Item.Name</h1>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Item.Description)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Item.Cost)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(modelItem=> @Model.Item.NumberAvailable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @Model.Item.NumberAvailable)
+            </td>
+        </tr>
+    </table>
+    <div>
+         @Html.ActionLink("Back to Character", "Detail", "Character", new { id = @Model.CharacterId}, new { @class = "btn btn-default"})
+    </div>
+</div>

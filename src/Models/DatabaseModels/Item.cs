@@ -8,6 +8,7 @@ namespace GloomhavenTracker.Models.DatabaseModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public int Cost { get; set; }
         public int NumberAvailable { get; set; }
         public bool Available { get; set; }

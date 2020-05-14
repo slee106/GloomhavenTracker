@@ -65,9 +65,14 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            var model = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id);
+            var items = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Where(x => x.CharacterItems.Any(y => y.CharacterId == id)).ToList();
+            var viewModel = new CharacterDetailViewModel()
+            {
+                Character = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id),
+                Items = items
+            };
 
-            return View(model);
+            return View(viewModel);
         }
 
         [HttpGet]
