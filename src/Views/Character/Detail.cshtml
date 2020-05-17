@@ -13,6 +13,10 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => @Model.Character.Level)
+                @if (@Model.Character.Party.Prosperity > @Model.Character.Level || @Model.Character.ExperiencePoints >= @Model.ExperiencePointsForNextLevel)
+                {
+                    <p style="color: red;">(You can Increase your character level)</p>
+                }
             </td>
         </tr>
         <tr>

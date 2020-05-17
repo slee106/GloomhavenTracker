@@ -72,10 +72,12 @@ namespace GloomhavenTracker.Controllers
         public IActionResult Detail(int id)
         {
             var items = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Where(x => x.CharacterItems.Any(y => y.CharacterId == id)).ToList();
+            var character = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id);
             var viewModel = new CharacterDetailViewModel()
             {
-                Character = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id),
-                Items = items
+                Character = character,
+                Items = items,
+                ExperiencePointsForNextLevel = characterService.CalculateExperienceBasedOnLevel(character.Level + 1)
             };
 
             return View(viewModel);
@@ -105,6 +107,11 @@ namespace GloomhavenTracker.Controllers
         public IActionResult Edit(CharacterEditViewModel model, bool stayOnSamePage)
         {
             model.Character.RetirementDate = model.Retired ? DateTime.Today as DateTime? : null;
+            var experienceForLevel = characterService.CalculateExperienceBasedOnLevel(model.Character.Level);
+            if (model.Character.ExperiencePoints < experienceForLevel)
+            {
+                model.Character.ExperiencePoints = experienceForLevel;
+            }
             gloomhavenTrackerContext.Characters.Update(model.Character);
             gloomhavenTrackerContext.SaveChanges();
 

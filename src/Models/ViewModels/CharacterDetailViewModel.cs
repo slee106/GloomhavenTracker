@@ -7,5 +7,6 @@ namespace GloomhavenTracker.Models.ViewModels
     {
         public Character Character { get; set; }
         public List<Item> Items { get; set; }
+        public int ExperiencePointsForNextLevel { get; set; }
     }
 }
