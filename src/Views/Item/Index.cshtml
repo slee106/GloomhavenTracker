@@ -1,14 +1,18 @@
 @using GloomhavenTracker.Models.ViewModels
-@model ItemIndexViewModel
+@model List<ItemIndexViewModel>
 
 @{
     ViewData["Title"] = "Items";
 }
 <div class="text-center">
-    <h1 class="display-4">Shop</h1>
-    @if (@Model.PartyDiscount != 0)
+    <h1 class="display-4">Items</h1>
+    @if (ViewData["options"].ToString() == "All")
     {
-        <h3 style="text-align: left;">Shop Discount: @Model.PartyDiscount</h3>
+        @Html.ActionLink("Show Only Available Items", "Index", "Item",new { showOnlyAvailable = true}, new { @class = "btn btn-default" })
+    }
+    @if (ViewData["options"].ToString() == "OnlyAvailable")
+    {
+        @Html.ActionLink("Show All Items", "Index", "Item",new { showOnlyAvailable = false}, new { @class = "btn btn-default" })
     }
     <table class="table table-hover">  
         <tr>  
@@ -16,33 +20,30 @@
             <th>Description</th>   
             <th>Cost</th>
             <th>Number Available</th>
+            <th>Characters with item</th>
         </tr>  
-        @foreach (var item in Model.Items)  
+        @foreach (var item in Model)  
         {  
             <tr> 
                 <td>
-                    @item.Name
+                    @item.Item.Name
                 </td> 
                 <td>
-                    @item.Description
+                    @item.Item.Description
                 </td> 
                 <td>
-                    @if (@Model.PartyDiscount != 0)
-                    {
-                        <span style="text-decoration: line-through; text-decoration-color: red;">@item.Cost   </span>
-                    }
-                    <span>@(@item.Cost + @Model.PartyDiscount)</span>
+                    @item.Item.Cost
                 </td> 
                 <td>
-                    @item.NumberAvailable
-                </td> 
+                    @item.NumberInShop / @item.Item.NumberAvailable
+                </td>
                 <td>
-                    @Html.ActionLink("Add to Character", "AddItemToCharacter", new { characterId = Model.CharacterId, itemId = @item.Id })
-                </td> 
+                @foreach (var character in @item.CharactersWithCopy)
+                {
+                    <span>@character.Name</span>
+                }
+                </td>
             </tr>  
         }  
     </table>
-</div>
-<div>
-    @Html.ActionLink("Return to Character", "Detail","Character", new { id = Model.CharacterId }, new { @class = "btn btn-default"})
 </div>

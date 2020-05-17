@@ -1,4 +1,5 @@
 @using GloomhavenTracker.Models.DatabaseModels
+@using GloomhavenTracker.Models.Enums
 @inject GloomhavenTracker.Data.GloomhavenTrackerContext context;
 @model Item
 @{
@@ -37,6 +38,17 @@
         <div class="col-md-10">
             <input asp-for="NumberAvailable" class="form-control" />
             <span asp-validation-for="NumberAvailable" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Type" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="Type" class="form-control">
+            @foreach (var type in @Enum.GetValues(typeof(ItemType)))
+            {
+                <option class="form-control">@type.ToString()</option>
+            }
+            </select>
         </div>
     </div>
     <div class="form-group">

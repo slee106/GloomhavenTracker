@@ -5,8 +5,8 @@ namespace GloomhavenTracker.Models.ViewModels
 {
     public class ItemIndexViewModel
     {
-        public List<Item> Items { get; set; }
-        public int CharacterId { get; set; }
-        public int PartyDiscount { get; set; }
+        public Item Item { get; set; }
+        public int NumberInShop { get; set; }
+        public List<Character> CharactersWithCopy { get; set; }
     }
 }

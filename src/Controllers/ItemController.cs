@@ -30,10 +30,14 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int characterId)
+        public IActionResult Shop(int characterId, bool insufficentFunds = false)
         {
+            if (insufficentFunds)
+            {
+                ViewData["InsufficentFunds"] = "Character doesn't have enough gold";
+            }
             var reputation = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == characterId).Party.Reputation;
-            var viewModel = new ItemIndexViewModel()
+            var viewModel = new ShopViewModel()
             {
                 CharacterId = characterId,
                 Items = itemService.GetItemsWithAdjustedAmounts(gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Where(x => (x.CharacterItems.Any(x => x.CharacterId != characterId) || x.CharacterItems.Count == 0) && x.Available).ToList()),
@@ -43,17 +47,49 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index(bool showOnlyAvailable)
+        {
+            ViewData["options"] = "All";
+            if (showOnlyAvailable)
+            {
+                ViewData["options"] = "OnlyAvailable";
+            }
+            var items = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).ToList();
+            var viewModelList = new List<ItemIndexViewModel>();
+
+            foreach (var item in items)
+            {
+                var numberOwned = item.CharacterItems.Count();
+                var listOfCharacterIds = item.CharacterItems.Select(x => x.CharacterId);
+                var characters = gloomhavenTrackerContext.Characters.Where(x => listOfCharacterIds.Contains(x.Id)).ToList();
+
+                var numberInShop = item.NumberAvailable - numberOwned;
+
+                if (numberInShop != 0 || !showOnlyAvailable)
+                {
+                    viewModelList.Add(new ItemIndexViewModel()
+                    {
+                        Item = item,
+                        NumberInShop = numberInShop,
+                        CharactersWithCopy = characters
+                    });
+                }
+            }
+            return View(viewModelList);
+        }
+
+        [HttpGet]
         public IActionResult AddItemToCharacter(int characterId, int itemId)
         {
             var character = gloomhavenTrackerContext.Characters.Single(x => x.Id == characterId);
             var item = gloomhavenTrackerContext.Items.Single(x => x.Id == itemId);
 
-            // if (character.Gold < item.Cost)
-            // {
-            //     ViewBag["Message"] = "Character doesn't have enough gold";
-            //     return View("Index", new { characterId });
-            // }
+            if (character.Gold < item.Cost)
+            {
+                return RedirectToAction("Shop", new { characterId = characterId, insufficentFunds = true });
+            }
 
+            character.Gold -= item.Cost;
             character.CharacterItems = new List<CharacterItem>()
             {
                 new CharacterItem()

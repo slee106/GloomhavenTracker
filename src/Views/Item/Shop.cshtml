@@ -1,0 +1,52 @@
+@using GloomhavenTracker.Models.ViewModels
+@model ShopViewModel
+
+@{
+    ViewData["Title"] = "Items";
+}
+<div class="text-center">
+    <h1 class="display-4">Shop</h1>
+    @if (ViewData.Any(x=>x.Key == "InsufficentFunds"))
+    {
+        <h3 style="color: red;">@ViewData["InsufficentFunds"]</h3>
+    }
+    @if (@Model.PartyDiscount != 0)
+    {
+        <h3 style="text-align: left;">Shop Discount: @Model.PartyDiscount</h3>
+    }
+    <table class="table table-hover">  
+        <tr>  
+            <th>Item name</th>   
+            <th>Description</th>   
+            <th>Cost</th>
+            <th>Number Available</th>
+        </tr>  
+        @foreach (var item in Model.Items)  
+        {  
+            <tr> 
+                <td>
+                    @item.Name
+                </td> 
+                <td>
+                    @item.Description
+                </td> 
+                <td>
+                    @if (@Model.PartyDiscount != 0)
+                    {
+                        <span style="text-decoration: line-through; text-decoration-color: red;">@item.Cost   </span>
+                    }
+                    <span>@(@item.Cost + @Model.PartyDiscount)</span>
+                </td> 
+                <td>
+                    @item.NumberAvailable
+                </td> 
+                <td>
+                    @Html.ActionLink("Add to Character", "AddItemToCharacter", new { characterId = Model.CharacterId, itemId = @item.Id })
+                </td> 
+            </tr>  
+        }  
+    </table>
+</div>
+<div>
+    @Html.ActionLink("Return to Character", "Detail","Character", new { id = Model.CharacterId }, new { @class = "btn btn-default"})
+</div>
