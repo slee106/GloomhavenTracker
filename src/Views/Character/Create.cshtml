@@ -1,7 +1,7 @@
-@using GloomhavenTracker.Models.DatabaseModels
+@using GloomhavenTracker.Models.ViewModels
 @using GloomhavenTracker.Models.Enums
 @inject GloomhavenTracker.Data.GloomhavenTrackerContext context;
-@model Character
+@model CharacterCreateViewModel
 @{
     ViewData["Title"] = "Create Character";
 }
@@ -12,16 +12,16 @@
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="Name" class="col-md-2 control-label"></label>
+        <label asp-for="Character.Name" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <input asp-for="Character.Name" class="form-control" />
+            <span asp-validation-for="Character.Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Class" class="col-md-2 control-label"></label>
+        <label asp-for="Character.Class" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <select asp-for="Class" class="form-control">
+            <select asp-for="Character.Class" class="form-control">
             @foreach (var c in @Enum.GetValues(typeof(Class)))
             {
                 <option class="form-control">@c.ToString()</option>
@@ -30,31 +30,21 @@
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Level" class="col-md-2 control-label"></label>
+        <label asp-for="Character.Level" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Level" class="form-control" />
-            <span asp-validation-for="Level" class="text-danger"></span>
+            <select asp-for="Character.Level" class="form-control">
+            @foreach (var level in @Model.AvailableLevels)
+            {
+                <option class="form-control">@level.ToString()</option>
+            }
+            </select>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="ExperiencePoints" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="ExperiencePoints" class="form-control" />
-            <span asp-validation-for="ExperiencePoints" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Gold" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Gold" class="form-control" />
-            <span asp-validation-for="Gold" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Character.CreationDate, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <input class="form-control date-picker text-box single-line" data-val="true" data-val-required="The CreationDate field is required." id="CreationDate" name="CreationDate"  type="date" value=@DateTime.Today.Date.ToString("yyyy-MM-dd")>
-            @Html.ValidationMessageFor(model => model.CreationDate)
+            @Html.ValidationMessageFor(model => model.Character.CreationDate)
         </div>
     </div>
     <div style="visibility: hidden; height:0px">

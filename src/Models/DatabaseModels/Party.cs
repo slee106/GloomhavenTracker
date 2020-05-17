@@ -20,7 +20,19 @@ namespace GloomhavenTracker.Models.DatabaseModels
         [Display(Name = "Date of Creation")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime DateOfCreation { get; set; }
+        [NotMapped]
+        private DateTime dateOfCreation = DateTime.Today.Date;
+        public DateTime DateOfCreation
+        {
+            get
+            {
+                return dateOfCreation;
+            }
+            set
+            {
+                dateOfCreation = value;
+            }
+        }
         public string Notes { get; set; }
 
         [Range(-15, 15)]

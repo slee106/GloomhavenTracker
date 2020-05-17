@@ -9,5 +9,6 @@ namespace GloomhavenTracker.Models.ViewModels
     {
         public Character Character { get; set; }
         public int? PartyId { get; set; }
+        public List<int> AvailableLevels { get; set; }
     }
 }

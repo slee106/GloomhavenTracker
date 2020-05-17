@@ -17,6 +17,7 @@ namespace GloomhavenTracker.Models.DatabaseModels
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [NotMapped]
         private DateTime creationDate = DateTime.Today.Date;
         public DateTime CreationDate
         {

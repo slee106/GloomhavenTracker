@@ -44,7 +44,7 @@
                 @Html.LabelFor(modelItem=> @Model.DateOfCreation)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => @Model.DateOfCreation)
+                @Model.DateOfCreation.ToString("dd/MM/yyyy")
             </td>
         </tr>
     </table>

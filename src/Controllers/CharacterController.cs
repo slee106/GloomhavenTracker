@@ -12,6 +12,7 @@ using GloomhavenTracker.Models.ViewModels;
 using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using GloomhavenTracker.Services;
 
 namespace GloomhavenTracker.Controllers
 {
@@ -20,11 +21,13 @@ namespace GloomhavenTracker.Controllers
     {
         private readonly ILogger<CharacterController> _logger;
         private readonly GloomhavenTrackerContext gloomhavenTrackerContext;
+        private readonly ICharacterService characterService;
 
-        public CharacterController(ILogger<CharacterController> logger, GloomhavenTrackerContext gloomhavenTrackerContext)
+        public CharacterController(ILogger<CharacterController> logger, GloomhavenTrackerContext gloomhavenTrackerContext, ICharacterService characterService)
         {
             _logger = logger;
             this.gloomhavenTrackerContext = gloomhavenTrackerContext;
+            this.characterService = characterService;
         }
 
         [HttpGet]
@@ -45,20 +48,24 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Create(int partyId)
         {
-            var model = new Character()
+            var model = new CharacterCreateViewModel()
             {
                 PartyId = partyId,
+                AvailableLevels = characterService.GetAvailableLevels(partyId)
             };
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(Character model)
+        public IActionResult Create(CharacterCreateViewModel model)
         {
-            gloomhavenTrackerContext.Characters.Update(model);
+            model.Character.ExperiencePoints = characterService.CalculateExperienceBasedOnLevel(model.Character.Level);
+            model.Character.Gold = characterService.CalculateGoldBasedOnLevel(model.Character.Level);
+            model.Character.PartyId = (int)model.PartyId;
+            gloomhavenTrackerContext.Characters.Add(model.Character);
             gloomhavenTrackerContext.SaveChanges();
 
-            return RedirectToAction("Detail", "Party", new { id = model.PartyId });
+            return RedirectToAction("Detail", "Character", new { id = model.Character.Id });
         }
 
         [HttpGet]
