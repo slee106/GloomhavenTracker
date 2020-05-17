@@ -54,9 +54,12 @@ namespace GloomhavenTracker.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
                     Cost = table.Column<int>(nullable: false),
                     NumberAvailable = table.Column<int>(nullable: false),
-                    Available = table.Column<bool>(nullable: false)
+                    Available = table.Column<bool>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    Equipped = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,13 +203,14 @@ namespace GloomhavenTracker.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     ExperiencePoints = table.Column<int>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Gold = table.Column<int>(nullable: false),
                     Level = table.Column<int>(nullable: false),
                     RetirementDate = table.Column<DateTime>(nullable: true),
-                    PartyId = table.Column<int>(nullable: false)
+                    PartyId = table.Column<int>(nullable: false),
+                    Class = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

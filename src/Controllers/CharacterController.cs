@@ -45,10 +45,9 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Create(int partyId)
         {
-
             var model = new Character()
             {
-                PartyId = partyId
+                PartyId = partyId,
             };
             return View(model);
         }
@@ -81,7 +80,7 @@ namespace GloomhavenTracker.Controllers
             gloomhavenTrackerContext.Characters.Remove(new Character() { Id = id });
             gloomhavenTrackerContext.SaveChanges();
 
-            return RedirectToAction("Index", new { partyId = partyId });
+            return RedirectToAction("Detail", "Party", new { id = partyId });
         }
 
         [HttpGet]

@@ -1,14 +1,14 @@
 @using GloomhavenTracker.Models.DatabaseModels
+@using GloomhavenTracker.Models.Enums
 @inject GloomhavenTracker.Data.GloomhavenTrackerContext context;
 @model Character
 @{
     ViewData["Title"] = "Create Character";
 }
-
 <h1>@ViewData["Title"].</h1>
 
 <form asp-controller="Character" asp-action="Create" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-    <h4>Create a new party.</h4>
+    <h4>Create a new character</h4>
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
@@ -16,6 +16,17 @@
         <div class="col-md-10">
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Class" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="Class" class="form-control">
+            @foreach (var c in @Enum.GetValues(typeof(Class)))
+            {
+                <option class="form-control">@c.ToString()</option>
+            }
+            </select>
         </div>
     </div>
     <div class="form-group">
@@ -40,17 +51,10 @@
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="CreationDate" class="col-md-2 control-label"></label>
+        @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <input type="date" asp-for="CreationDate" class="form-control" />
-            <span asp-validation-for="CreationDate" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="RetirementDate" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input type="date" asp-for="RetirementDate" class="form-control" />
-            <span asp-validation-for="RetirementDate" class="text-danger"></span>
+            <input class="form-control date-picker text-box single-line" data-val="true" data-val-required="The CreationDate field is required." id="CreationDate" name="CreationDate"  type="date" value=@DateTime.Today.Date.ToString("yyyy-MM-dd")>
+            @Html.ValidationMessageFor(model => model.CreationDate)
         </div>
     </div>
     <div style="visibility: hidden; height:0px">

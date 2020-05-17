@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using GloomhavenTracker.Models.Enums;
 
 namespace GloomhavenTracker.Models.DatabaseModels
 {
@@ -12,6 +13,8 @@ namespace GloomhavenTracker.Models.DatabaseModels
         public int Cost { get; set; }
         public int NumberAvailable { get; set; }
         public bool Available { get; set; }
+        public ItemType Type { get; set; }
+        public bool Equipped { get; set; }
         public ICollection<CharacterItem> CharacterItems { get; set; }
     }
 }

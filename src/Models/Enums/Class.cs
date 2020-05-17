@@ -4,10 +4,11 @@ namespace GloomhavenTracker.Models.Enums
     {
         Brute,
         Spellweaver,
-        Crahheart,
+        Cragheart,
         Mindtheif,
         Scoundrel,
         Tinkerer,
-        
+        Sun,
+        QuarterMaster
     }
 }

@@ -27,7 +27,7 @@
     <div class="form-group">
         <label asp-for="Party.DateOfCreation" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input type="date" asp-for="Party.DateOfCreation" class="form-control" />
+            <input class="form-control date-picker text-box single-line" data-val="true" data-val-required="The DateOfCreation field is required." id="DateOfCreation" name="DateOfCreation"  type="date" value=@DateTime.Today.Date.ToString("yyyy-MM-dd")>
             <span asp-validation-for="Party.DateOfCreation" class="text-danger"></span>
         </div>
     </div>

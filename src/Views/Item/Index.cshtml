@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Items";
 }
-
 <div class="text-center">
     <h1 class="display-4">Shop</h1>
     @if (@Model.PartyDiscount != 0)
@@ -32,7 +31,7 @@
                     {
                         <span style="text-decoration: line-through; text-decoration-color: red;">@item.Cost   </span>
                     }
-                    <span>@(@item.Cost - @Model.PartyDiscount)</span>
+                    <span>@(@item.Cost + @Model.PartyDiscount)</span>
                 </td> 
                 <td>
                     @item.NumberAvailable

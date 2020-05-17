@@ -5,8 +5,8 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">@Model.Character.Name</h1>
-    <table class="table table-bordered table-hover">
+    <h1 class="display-4">@Model.Character.Name - @Model.Character.Class.ToString()</h1>
+    <table class="table table-hover">
         <tr>
             <td>
                 @Html.LabelFor(modelItem=> @Model.Character.Level)
@@ -75,7 +75,7 @@
     }
     <div>
         @Html.ActionLink("Edit Character", "Edit", new {id = @Model.Character.Id}, new { @class = "btn btn-default" })
-        @Html.ActionLink("Delete Character", "Delete", new {id = @Model.Character.Id}, new { @class = "btn btn-default", onclick = "return confirm('Are you sure you wish to delete this Character?');" })
+        @Html.ActionLink("Delete Character", "Delete", new {id = @Model.Character.Id, partyId = @Model.Character.PartyId}, new { @class = "btn btn-default", onclick = "return confirm('Are you sure you wish to delete this Character?');" })
         @Html.ActionLink("Back to Party", "Detail", "Party", new { id = @Model.Character.Party.Id}, new { @class = "btn btn-default" })
         @Html.ActionLink("Visit Shop", "Index", "Item", new { characterId = @Model.Character.Id}, new { @class = "btn btn-default" })
     </div>

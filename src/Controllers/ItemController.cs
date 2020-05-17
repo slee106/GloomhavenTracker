@@ -46,6 +46,14 @@ namespace GloomhavenTracker.Controllers
         public IActionResult AddItemToCharacter(int characterId, int itemId)
         {
             var character = gloomhavenTrackerContext.Characters.Single(x => x.Id == characterId);
+            var item = gloomhavenTrackerContext.Items.Single(x => x.Id == itemId);
+
+            // if (character.Gold < item.Cost)
+            // {
+            //     ViewBag["Message"] = "Character doesn't have enough gold";
+            //     return View("Index", new { characterId });
+            // }
+
             character.CharacterItems = new List<CharacterItem>()
             {
                 new CharacterItem()
@@ -56,7 +64,6 @@ namespace GloomhavenTracker.Controllers
             gloomhavenTrackerContext.Characters.Update(character);
             gloomhavenTrackerContext.SaveChanges();
 
-            var item = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Single(x => x.Id == itemId);
             if (item.CharacterItems.Count == item.NumberAvailable)
             {
                 item.Available = false;
