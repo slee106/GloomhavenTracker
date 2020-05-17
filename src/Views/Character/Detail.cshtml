@@ -1,4 +1,5 @@
 @using GloomhavenTracker.Models.ViewModels
+@using GloomhavenTracker.Models.Enums
 @model CharacterDetailViewModel
 @{
     ViewData["Title"] = @Model.Character.Name;
@@ -82,6 +83,61 @@
                 </tr>
             }
         </table>
+        <div style="height: 180.111px; width: 74.858px;">
+            @if (@Model.Items.Any(x=>x.Type == ItemType.Head))
+            {
+                <div style="height: 17.767%; width: 100%; background-image: url('/images/mannequin/head_blue.png'); float: left;">
+                </div>
+            }
+            else
+            {
+                <div style="height: 17.767%; width: 100%; background-image: url('/images/mannequin/head_grey.png'); float: left;">
+                </div> 
+            }
+            @if (@Model.Items.Any(x=>x.Type == ItemType.TwoHand) || @Model.Items.Where(x=>x.Type == ItemType.Hand).Count() == 2)
+            {
+                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/rightArm_grey.png'); float: left;">
+                </div>
+                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/leftArm_grey.png'); float: right;">
+                </div>
+            }
+            else if(@Model.Items.Where(x=>x.Type == ItemType.Hand).Count() == 1)
+            {
+                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/rightArm_blue.png'); float: left;">
+                </div>
+                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/leftArm_grey.png'); float: right;">
+                </div>
+            }
+            else
+            {
+                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/rightArm_blue.png'); float: left;">
+                </div>
+                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/leftArm_grey.png'); float: right;">
+                </div>
+            }
+
+            @if (@Model.Items.Any(x=>x.Type == ItemType.Body))
+            {
+                <div style="height: 48.304%; width: 60%; background-image: url('/images/mannequin/body_blue.png');float: left;">
+                </div>
+            }
+            else
+            {
+                <div style="height: 48.304%; width: 60%; background-image: url('/images/mannequin/body_grey.png');float: left;">
+                </div>
+            }
+
+            @if (@Model.Items.Any(x=>x.Type == ItemType.Feet))
+            {
+                <div style="height: 33.868%; width: 100%; background-image: url('/images/mannequin/feet_blue.png'); float: left;">
+                </div>  
+            }
+            else
+            {
+                <div style="height: 33.868%; width: 100%; background-image: url('/images/mannequin/feet_grey.png'); float: left;">
+                </div>
+            }
+        </div>
     }
     <div>
         @Html.ActionLink("Edit Character", "Edit", new {id = @Model.Character.Id}, new { @class = "btn btn-default" })

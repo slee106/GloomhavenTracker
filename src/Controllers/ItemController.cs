@@ -12,6 +12,7 @@ using GloomhavenTracker.Models.ViewModels;
 using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Data;
 using GloomhavenTracker.Services;
+using GloomhavenTracker.Models.Enums;
 
 namespace GloomhavenTracker.Controllers
 {
@@ -134,6 +135,14 @@ namespace GloomhavenTracker.Controllers
                 Item = gloomhavenTrackerContext.Items.Single(x => x.Id == itemId)
             };
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EquipItem(int itemId, int characterId, ItemType itemType)
+        {
+            var previouslyEquippedItem = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Where(x => x.CharacterItems.Any(y => y.CharacterId == characterId) && x.Type == itemType).ToList();
+
+            return RedirectToAction("Detail", "Character", new { id = characterId });
         }
     }
 }
