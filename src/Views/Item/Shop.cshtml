@@ -16,16 +16,20 @@
     }
     <table class="table table-hover">  
         <tr>  
-            <th>Item name</th>   
-            <th>Description</th>   
+            <th>Item name</th>
+            <th>Type</th> 
+            <th>Description</th>
             <th>Cost</th>
             <th>Number Available</th>
         </tr>  
-        @foreach (var item in Model.Items)  
+        @foreach (var item in @Model.Items)  
         {  
             <tr> 
                 <td>
                     @item.Name
+                </td> 
+                <td>
+                    @item.Type
                 </td> 
                 <td>
                     @item.Description
@@ -41,7 +45,7 @@
                     @item.NumberAvailable
                 </td> 
                 <td>
-                    @Html.ActionLink("Add to Character", "AddItemToCharacter", new { characterId = Model.CharacterId, itemId = @item.Id })
+                    @Html.ActionLink("Add to Character", "AddItemToCharacter", new { characterId = @Model.CharacterId, itemId = @item.Id, discount = @Model.PartyDiscount })
                 </td> 
             </tr>  
         }  

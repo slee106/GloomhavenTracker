@@ -40,5 +40,6 @@ namespace GloomhavenTracker.Models.DatabaseModels
         public Party Party { get; set; }
         public ICollection<CharacterItem> CharacterItems { get; set; }
         public Class Class { get; set; }
+        public int NumberOfConsumablesAvailable { get; set; }
     }
 }

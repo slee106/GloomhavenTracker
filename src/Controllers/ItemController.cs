@@ -80,7 +80,7 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddItemToCharacter(int characterId, int itemId)
+        public IActionResult AddItemToCharacter(int characterId, int itemId, int discount)
         {
             var character = gloomhavenTrackerContext.Characters.Single(x => x.Id == characterId);
             var item = gloomhavenTrackerContext.Items.Single(x => x.Id == itemId);
@@ -90,7 +90,7 @@ namespace GloomhavenTracker.Controllers
                 return RedirectToAction("Shop", new { characterId = characterId, insufficentFunds = true });
             }
 
-            character.Gold -= item.Cost;
+            character.Gold -= (item.Cost + discount);
             character.CharacterItems = new List<CharacterItem>()
             {
                 new CharacterItem()
@@ -147,7 +147,7 @@ namespace GloomhavenTracker.Controllers
                 previouslyEquippedItem = gloomhavenTrackerContext.CharacterItems.AsNoTracking().Include(x => x.Item).Where(x => x.CharacterId == characterId && (x.Item.Type == ItemType.TwoHand || x.Item.Type == ItemType.Hand) && x.Equipped).ToList();
             }
 
-            if (previouslyEquippedItem.Count != 0 && ((itemType != ItemType.Hand || previouslyEquippedItem.Count == 2)|| (previouslyEquippedItem[0].Item.Type == ItemType.TwoHand && itemType == ItemType.Hand)))
+            if (previouslyEquippedItem.Count != 0 && ((itemType != ItemType.Hand || previouslyEquippedItem.Count == 2) || (previouslyEquippedItem[0].Item.Type == ItemType.TwoHand && itemType == ItemType.Hand)))
             {
                 foreach (var item in previouslyEquippedItem)
                 {
@@ -159,7 +159,6 @@ namespace GloomhavenTracker.Controllers
                     });
                     gloomhavenTrackerContext.SaveChanges();
                 }
-
             }
 
             gloomhavenTrackerContext.CharacterItems.Update(new CharacterItem()
@@ -170,6 +169,18 @@ namespace GloomhavenTracker.Controllers
             });
             gloomhavenTrackerContext.SaveChanges();
 
+            return RedirectToAction("Detail", "Character", new { id = characterId });
+        }
+
+        public IActionResult UnequipItem(int itemId, int characterId)
+        {
+            gloomhavenTrackerContext.CharacterItems.Update(new CharacterItem()
+            {
+                ItemId = itemId,
+                CharacterId = characterId,
+                Equipped = false
+            });
+            gloomhavenTrackerContext.SaveChanges();
 
             return RedirectToAction("Detail", "Character", new { id = characterId });
         }

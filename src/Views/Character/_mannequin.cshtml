@@ -1,0 +1,78 @@
+@using GloomhavenTracker.Models.ViewModels
+@using GloomhavenTracker.Models.Enums
+@model CharacterDetailViewModel
+
+<link rel="stylesheet" href="~/css/custom/mannequin.css" />
+
+<div style="height: 180.111px; width: 100px; margin-top: 10px;">
+    <div style="height: 100%; width: 75%; float: left;">
+        @if (@Model.Character.CharacterItems.Any(x=>x.Item.Type == ItemType.Head && x.Equipped))
+        {
+            <div class="mannequin-head" style="background-image: url('/images/mannequin/head_blue.png');">
+            </div>
+        }
+        else
+        {
+            <div class="mannequin-head" style="background-image: url('/images/mannequin/head_grey.png');">
+            </div> 
+        }
+
+        @if (@Model.Character.CharacterItems.Any(x=>x.Item.Type == ItemType.TwoHand && x.Equipped) || @Model.Character.CharacterItems.Where(x=>x.Item.Type == ItemType.Hand && x.Equipped).Count() == 2)
+        {
+            <div class="mannequin-arm right-arm-blue">
+            </div>
+            <div class="mannequin-arm left-arm-blue">
+            </div>
+        }
+        else if(@Model.Character.CharacterItems.Where(x=>x.Item.Type == ItemType.Hand && x.Equipped).Count() == 1)
+        {
+            <div class="mannequin-arm right-arm-blue">
+            </div>
+            <div class="mannequin-arm left-arm-grey">
+            </div>
+        }
+        else
+        {
+            <div class="mannequin-arm right-arm-grey">
+            </div>
+            <div class="mannequin-arm left-arm-grey">
+            </div>
+        }
+
+        @if (@Model.Character.CharacterItems.Any(x=>x.Item.Type == ItemType.Body && x.Equipped))
+        {
+            <div class="mannequin-body" style="background-image: url('/images/mannequin/body_blue.png');">
+            </div>
+        }
+        else
+        {
+            <div class="mannequin-body" style="background-image: url('/images/mannequin/body_grey.png');">
+            </div>
+        }
+
+        @if (@Model.Character.CharacterItems.Any(x=>x.Item.Type == ItemType.Feet && x.Equipped))
+        {
+            <div class="mannequin-feet" style="background-image: url('/images/mannequin/feet_blue.png');">
+            </div>  
+        }
+        else
+        {
+            <div class="mannequin-feet" style="background-image: url('/images/mannequin/feet_grey.png');">
+            </div>
+        }
+
+    </div>
+    <div style="height: 100%; width: 25%; float: right;">
+        @for (int i = 0; i < @Model.NumberOfEquippedConsumables; i++)
+        {
+            <div class="mannequin-item" style=";background-image: url('/images/mannequin/item_blue.png');">
+            </div> 
+        }
+
+        @for (int i = 0; i < @Model.NumberOfFreeConsumableSpaces; i++)
+        {
+            <div class="mannequin-item" style="background-image: url('/images/mannequin/item_grey.png');">
+            </div> 
+        }
+    </div>
+</div>

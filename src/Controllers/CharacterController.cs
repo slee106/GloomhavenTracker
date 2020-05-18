@@ -13,6 +13,7 @@ using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using GloomhavenTracker.Services;
+using GloomhavenTracker.Models.Enums;
 
 namespace GloomhavenTracker.Controllers
 {
@@ -62,6 +63,7 @@ namespace GloomhavenTracker.Controllers
             model.Character.ExperiencePoints = characterService.CalculateExperienceBasedOnLevel(model.Character.Level);
             model.Character.Gold = characterService.CalculateGoldBasedOnLevel(model.Character.Level);
             model.Character.PartyId = (int)model.PartyId;
+            model.Character.NumberOfConsumablesAvailable = (int)Math.Round((decimal)(model.Character.Level / 2), 0, MidpointRounding.AwayFromZero);
             gloomhavenTrackerContext.Characters.Add(model.Character);
             gloomhavenTrackerContext.SaveChanges();
 
@@ -71,11 +73,14 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            var character = gloomhavenTrackerContext.Characters.Include(x => x.Party).Include(x=>x.CharacterItems).ThenInclude(x=>x.Item).Single(x => x.Id == id);
+            var character = gloomhavenTrackerContext.Characters.Include(x => x.Party).Include(x => x.CharacterItems).ThenInclude(x => x.Item).Single(x => x.Id == id);
+            var numberOfEquippedConsumables = character.CharacterItems.Where(x => x.Item.Type == ItemType.Consumable && x.Equipped).Count();
             var viewModel = new CharacterDetailViewModel()
             {
                 Character = character,
-                ExperiencePointsForNextLevel = characterService.CalculateExperienceBasedOnLevel(character.Level + 1)
+                ExperiencePointsForNextLevel = characterService.CalculateExperienceBasedOnLevel(character.Level + 1),
+                NumberOfEquippedConsumables = numberOfEquippedConsumables,
+                NumberOfFreeConsumableSpaces = character.NumberOfConsumablesAvailable - numberOfEquippedConsumables
             };
 
             return View(viewModel);

@@ -1,0 +1,39 @@
+.mannequin-arm {
+    height: 48.36%;
+    width: 20%;
+}
+.right-arm-blue {
+    float:left;
+    background-image: url('/images/mannequin/rightArm_blue.png')
+}
+.right-arm-grey {
+    float:left;
+    background-image: url('/images/mannequin/rightArm_grey.png')
+}
+.left-arm-blue {
+    float:right;
+    background-image: url('/images/mannequin/leftArm_blue.png')
+}
+.left-arm-grey {
+    float:right;
+    background-image: url('/images/mannequin/leftArm_grey.png')
+}
+.mannequin-head {
+    height: 17.767%; 
+    width: 100%;
+    float: left;
+}
+.mannequin-body {
+    height: 48.304%; 
+    width: 60%;
+    float: left;
+}
+.mannequin-feet {
+    height: 33.868%; 
+    width: 100%;
+    float: left;
+}
+.mannequin-item {
+    height: 25px; 
+    width: 25px;
+}

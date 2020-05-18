@@ -64,89 +64,45 @@
             </tr>
         }
     </table>
-    @if (@Model.Character.CharacterItems != null)
+    @if (@Model.Character.CharacterItems.Any())
     {
         <h3 style="text-align: left;">Items</h3>
-        <table>
-            @foreach (var item in @Model.Character.CharacterItems)
-            {
-                <tr>
+        <table class="table table-hover">
+            <tr>
+                <th>Head</th>
+                <th>Body</th>
+                <th>Hand</th>
+                <th>Two Hands</th>
+                <th>Feet</th>
+                <th>Consumable</th>
+            </tr>
+            <tr>
+                @foreach (ItemType itemType in @Enum.GetValues(typeof(ItemType)))
+                {
                     <td>
-                        @Html.ActionLink(@item.Item.Name, "Detail", "Item", new { itemId = @item.Item.Id, characterId = @Model.Character.Id })
+                        <table>
+                            @foreach (var item in @Model.Character.CharacterItems.Where(x=>x.Item.Type == @itemType))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.ActionLink(@item.Item.Name, "Detail", "Item", new { itemId = @item.Item.Id, characterId = @Model.Character.Id })
+                                        @if (!@item.Equipped)
+                                        {    
+                                            @Html.ActionLink("✓", "EquipItem", "Item", new { itemId = @item.Item.Id, characterId = @Model.Character.Id, itemType = @item.Item.Type }, new { @class="btn btn-default"})
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("X", "UnequipItem", "Item", new { itemId = @item.Item.Id, characterId = @Model.Character.Id, itemType = @item.Item.Type }, new { @class="btn btn-default"})
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </table>
                     </td>
-                    <td>
-                        <span style="width: 10px;">-</span>
-                    </td>
-                    <td>
-                        @item.Item.Type.ToString()
-                    </td>
-                    @if (!@item.Equipped)
-                    {
-                    <td>
-                        <span style="width: 10px;">-</span>
-                    </td>
-                    <td>
-                        @Html.ActionLink("Equip", "EquipItem", "Item", new { itemId = @item.Item.Id, characterId = @Model.Character.Id, itemType = @item.Item.Type })
-                    </td>
-                    }
-                </tr>
-            }
+                }
+            </tr>
         </table>
-        <div style="height: 180.111px; width: 74.858px;">
-            @if (@Model.Character.CharacterItems.Any(x=>x.Item.Type == ItemType.Head && x.Equipped))
-            {
-                <div style="height: 17.767%; width: 100%; background-image: url('/images/mannequin/head_blue.png'); float: left;">
-                </div>
-            }
-            else
-            {
-                <div style="height: 17.767%; width: 100%; background-image: url('/images/mannequin/head_grey.png'); float: left;">
-                </div> 
-            }
-            @if (@Model.Character.CharacterItems.Any(x=>x.Item.Type == ItemType.TwoHand && x.Equipped) || @Model.Character.CharacterItems.Where(x=>x.Item.Type == ItemType.Hand && x.Equipped).Count() == 2)
-            {
-                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/rightArm_blue.png'); float: left;">
-                </div>
-                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/leftArm_blue.png'); float: right;">
-                </div>
-            }
-            else if(@Model.Character.CharacterItems.Where(x=>x.Item.Type == ItemType.Hand && x.Equipped).Count() == 1)
-            {
-                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/rightArm_blue.png'); float: left;">
-                </div>
-                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/leftArm_grey.png'); float: right;">
-                </div>
-            }
-            else
-            {
-                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/rightArm_grey.png'); float: left;">
-                </div>
-                <div style="height: 48.36%; width: 20%; background-image: url('/images/mannequin/leftArm_grey.png'); float: right;">
-                </div>
-            }
-
-            @if (@Model.Character.CharacterItems.Any(x=>x.Item.Type == ItemType.Body && x.Equipped))
-            {
-                <div style="height: 48.304%; width: 60%; background-image: url('/images/mannequin/body_blue.png');float: left;">
-                </div>
-            }
-            else
-            {
-                <div style="height: 48.304%; width: 60%; background-image: url('/images/mannequin/body_grey.png');float: left;">
-                </div>
-            }
-
-            @if (@Model.Character.CharacterItems.Any(x=>x.Item.Type == ItemType.Feet && x.Equipped))
-            {
-                <div style="height: 33.868%; width: 100%; background-image: url('/images/mannequin/feet_blue.png'); float: left;">
-                </div>  
-            }
-            else
-            {
-                <div style="height: 33.868%; width: 100%; background-image: url('/images/mannequin/feet_grey.png'); float: left;">
-                </div>
-            }
-        </div>
+        @Html.Partial("_mannequin.cshtml", @Model)
     }
     <div>
         @Html.ActionLink("Edit Character", "Edit", new {id = @Model.Character.Id}, new { @class = "btn btn-default" })
