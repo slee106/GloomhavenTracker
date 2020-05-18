@@ -14,7 +14,6 @@ namespace GloomhavenTracker.Models.DatabaseModels
         public int NumberAvailable { get; set; }
         public bool Available { get; set; }
         public ItemType Type { get; set; }
-        public bool Equipped { get; set; }
         public bool Unlocked { get; set; }
         public ICollection<CharacterItem> CharacterItems { get; set; }
     }

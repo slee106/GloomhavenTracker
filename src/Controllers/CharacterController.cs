@@ -71,12 +71,10 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            var items = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Where(x => x.CharacterItems.Any(y => y.CharacterId == id)).ToList();
-            var character = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id);
+            var character = gloomhavenTrackerContext.Characters.Include(x => x.Party).Include(x=>x.CharacterItems).ThenInclude(x=>x.Item).Single(x => x.Id == id);
             var viewModel = new CharacterDetailViewModel()
             {
                 Character = character,
-                Items = items,
                 ExperiencePointsForNextLevel = characterService.CalculateExperienceBasedOnLevel(character.Level + 1)
             };
 

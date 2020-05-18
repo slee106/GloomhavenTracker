@@ -16,6 +16,7 @@ namespace GloomhavenTracker.Data
         public DbSet<Party> Parties { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<CharacterItem> CharacterItems { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<PartyUser>()
