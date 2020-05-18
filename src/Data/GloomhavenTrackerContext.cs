@@ -17,6 +17,7 @@ namespace GloomhavenTracker.Data
         public DbSet<Character> Characters { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<CharacterItem> CharacterItems { get; set; }
+        public DbSet<PartyItem> PartyItems { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<PartyUser>()
@@ -49,6 +50,19 @@ namespace GloomhavenTracker.Data
                    .HasOne(ci => ci.Item)
                    .WithMany(i => i.CharacterItems)
                    .HasForeignKey(ci => ci.ItemId);
+
+            builder.Entity<PartyItem>()
+                   .HasKey(pi => new { pi.PartyId, pi.ItemId });
+
+            builder.Entity<PartyItem>()
+                   .HasOne(pi => pi.Party)
+                   .WithMany(p => p.PartyItems)
+                   .HasForeignKey(pi => pi.PartyId);
+
+            builder.Entity<PartyItem>()
+                   .HasOne(pi => pi.Item)
+                   .WithMany(i => i.PartyItems)
+                   .HasForeignKey(pi => pi.ItemId);
 
             base.OnModelCreating(builder);
         }

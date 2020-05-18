@@ -108,6 +108,6 @@
         @Html.ActionLink("Edit Character", "Edit", new {id = @Model.Character.Id}, new { @class = "btn btn-default" })
         @Html.ActionLink("Delete Character", "Delete", new {id = @Model.Character.Id, partyId = @Model.Character.PartyId}, new { @class = "btn btn-default", onclick = "return confirm('Are you sure you wish to delete this Character?');" })
         @Html.ActionLink("Back to Party", "Detail", "Party", new { id = @Model.Character.Party.Id}, new { @class = "btn btn-default" })
-        @Html.ActionLink("Visit Shop", "Shop", "Item", new { characterId = @Model.Character.Id}, new { @class = "btn btn-default" })
+        @Html.ActionLink("Visit Shop", "Shop", "Item", new { partyId = @Model.Character.PartyId, characterId = @Model.Character.Id}, new { @class = "btn btn-default" })
     </div>
 </div>

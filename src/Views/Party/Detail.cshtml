@@ -68,5 +68,6 @@
     <div>
         @Html.ActionLink("Edit", "Edit", new { id = @Model.Id}, new { @class = "btn btn-default" })
         @Html.ActionLink("Back to Parties", "Index", new { }, new { @class = "btn btn-default" })
+        @Html.ActionLink("Items", "Index", "Item", new { partyId = @Model.Id, showOnlyAvailable = false }, new { @class = "btn btn-default" })
     </div>
 </div>

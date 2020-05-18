@@ -5,7 +5,7 @@ namespace GloomhavenTracker.Services
 {
     public interface IItemService
     {
-        List<Item> GetItemsWithAdjustedAmounts(List<Item> unadjustedItems);
+        List<Item> GetItemsWithAdjustedAmounts(List<Item> unadjustedItems, int partyId);
         int CalculateShopDiscount(int partyRepuation);
     }
 }

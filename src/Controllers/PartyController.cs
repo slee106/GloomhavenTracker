@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using GloomhavenTracker.Models.ViewModels;
 using GloomhavenTracker.Models.DatabaseModels;
+using GloomhavenTracker.Services;
 
 namespace GloomhavenTracker.Controllers
 {
@@ -20,12 +21,15 @@ namespace GloomhavenTracker.Controllers
     {
         private readonly ILogger<PartyController> _logger;
         private readonly GloomhavenTrackerContext gloomhavenTrackerContext;
+        private readonly IPartyService partyService;
 
         public PartyController(ILogger<PartyController> logger,
-                               GloomhavenTrackerContext gloomhavenTrackerContext)
+                               GloomhavenTrackerContext gloomhavenTrackerContext,
+                               IPartyService partyService)
         {
             _logger = logger;
             this.gloomhavenTrackerContext = gloomhavenTrackerContext;
+            this.partyService = partyService;
         }
 
         [HttpGet]
@@ -77,6 +81,8 @@ namespace GloomhavenTracker.Controllers
                 party.PartyUsers = listOfPartyUsers;
                 gloomhavenTrackerContext.Parties.Add(party);
                 gloomhavenTrackerContext.SaveChanges();
+
+                partyService.AddPartyItems(party.Id, party.Prosperity);
             }
             return RedirectToAction("Index");
         }
@@ -84,7 +90,7 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            var model = gloomhavenTrackerContext.Parties.Include(x=>x.Characters).Single(x => x.Id == id);
+            var model = gloomhavenTrackerContext.Parties.Include(x => x.Characters).Single(x => x.Id == id);
 
             return View(model);
         }
@@ -108,9 +114,10 @@ namespace GloomhavenTracker.Controllers
         [HttpPost]
         public IActionResult Edit(string save, Party model)
         {
-
             gloomhavenTrackerContext.Parties.Update(model);
             gloomhavenTrackerContext.SaveChanges();
+
+            partyService.AddPartyItems(model.Id, model.Prosperity);
 
             if (save != null)
             {

@@ -67,12 +67,13 @@ namespace GloomhavenTracker.Services
             return 0;
         }
 
-        public List<Item> GetItemsWithAdjustedAmounts(List<Item> unadjustedItems)
+        public List<Item> GetItemsWithAdjustedAmounts(List<Item> unadjustedItems, int partyId)
         {
             var items = new List<Item>();
             foreach (var item in unadjustedItems)
             {
-                var numberOfItemsUsed = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Single(x => x.Id == item.Id).CharacterItems.Count();
+                var ite = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).ThenInclude(x=>x.Character).Single(x => x.Id == item.Id);
+                var numberOfItemsUsed = ite.CharacterItems.Count(x=>x.Character.PartyId == partyId);
                 var adjustedItem = item;
                 adjustedItem.NumberAvailable -= numberOfItemsUsed;
                 if (adjustedItem.NumberAvailable > 0)

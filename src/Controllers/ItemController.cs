@@ -31,44 +31,45 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpGet]
-        public IActionResult Shop(int characterId, bool insufficentFunds = false)
+        public IActionResult Shop(int partyId, int characterId, bool insufficentFunds = false)
         {
             if (insufficentFunds)
             {
                 ViewData["InsufficentFunds"] = "Character doesn't have enough gold";
             }
-            var reputation = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == characterId).Party.Reputation;
+            var reputation = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == characterId && x.PartyId == partyId).Party.Reputation;
             var viewModel = new ShopViewModel()
             {
                 CharacterId = characterId,
-                Items = itemService.GetItemsWithAdjustedAmounts(gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Where(x => (x.CharacterItems.Any(x => x.CharacterId != characterId) || x.CharacterItems.Count == 0) && x.Available).ToList()),
+                Items = itemService.GetItemsWithAdjustedAmounts(gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).Include(x => x.PartyItems).Where(x => (x.CharacterItems.Any(x => x.CharacterId != characterId) || x.CharacterItems.Count == 0) && x.Available).ToList(), partyId),
                 PartyDiscount = itemService.CalculateShopDiscount(reputation)
             };
             return View(viewModel);
         }
 
         [HttpGet]
-        public IActionResult Index(bool showOnlyAvailable)
+        public IActionResult Index(int partyId, bool showOnlyAvailable)
         {
             ViewData["options"] = "All";
             if (showOnlyAvailable)
             {
                 ViewData["options"] = "OnlyAvailable";
             }
-            var items = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).ToList();
-            var viewModelList = new List<ItemIndexViewModel>();
+            var items = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).ThenInclude(x => x.Character).ToList();
+
+            var itemIndexDtos = new List<ItemIndexDto>();
 
             foreach (var item in items)
             {
-                var numberOwned = item.CharacterItems.Count();
+                var numberOwned = item.CharacterItems.Where(x => x.Character.PartyId == partyId).Count();
                 var listOfCharacterIds = item.CharacterItems.Select(x => x.CharacterId);
-                var characters = gloomhavenTrackerContext.Characters.Where(x => listOfCharacterIds.Contains(x.Id)).ToList();
+                var characters = gloomhavenTrackerContext.Characters.Where(x => listOfCharacterIds.Contains(x.Id) && x.PartyId == partyId).ToList();
 
                 var numberInShop = item.NumberAvailable - numberOwned;
 
                 if (numberInShop != 0 || !showOnlyAvailable)
                 {
-                    viewModelList.Add(new ItemIndexViewModel()
+                    itemIndexDtos.Add(new ItemIndexDto()
                     {
                         Item = item,
                         NumberInShop = numberInShop,
@@ -76,7 +77,12 @@ namespace GloomhavenTracker.Controllers
                     });
                 }
             }
-            return View(viewModelList);
+            var viewModel = new ItemIndexViewModel()
+            {
+                ItemIndexDtos = itemIndexDtos,
+                PartyId = partyId
+            };
+            return View(viewModel);
         }
 
         [HttpGet]

@@ -3,14 +3,16 @@ using System;
 using GloomhavenTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GloomhavenTracker.Migrations
 {
     [DbContext(typeof(GloomhavenTrackerContext))]
-    partial class GloomhavenTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20200518195203_AddedProsperityToItem")]
+    partial class AddedProsperityToItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,6 +169,9 @@ namespace GloomhavenTracker.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Unlocked")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Item");
@@ -204,24 +209,6 @@ namespace GloomhavenTracker.Migrations
                     b.HasIndex("CreationUserId");
 
                     b.ToTable("Party");
-                });
-
-            modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.PartyItem", b =>
-                {
-                    b.Property<int>("PartyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Unlocked")
-                        .HasColumnType("bit");
-
-                    b.HasKey("PartyId", "ItemId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("PartyItem");
                 });
 
             modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.PartyUser", b =>
@@ -396,21 +383,6 @@ namespace GloomhavenTracker.Migrations
                     b.HasOne("GloomhavenTracker.Models.DatabaseModels.ApplicationUser", "CreationUser")
                         .WithMany()
                         .HasForeignKey("CreationUserId");
-                });
-
-            modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.PartyItem", b =>
-                {
-                    b.HasOne("GloomhavenTracker.Models.DatabaseModels.Item", "Item")
-                        .WithMany("PartyItems")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GloomhavenTracker.Models.DatabaseModels.Party", "Party")
-                        .WithMany("PartyItems")
-                        .HasForeignKey("PartyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("GloomhavenTracker.Models.DatabaseModels.PartyUser", b =>

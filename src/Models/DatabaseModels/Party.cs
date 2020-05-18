@@ -44,5 +44,6 @@ namespace GloomhavenTracker.Models.DatabaseModels
         public ApplicationUser CreationUser { get; set; }
         public ICollection<Character> Characters { get; set; } = new List<Character>();
         public ICollection<PartyUser> PartyUsers { get; set; } = new List<PartyUser>();
+        public ICollection<PartyItem> PartyItems { get; set; }
     }
 }
