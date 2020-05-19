@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using GloomhavenTracker.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using GloomhavenTracker.Models.ViewModels;
 using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Data;
-using GloomhavenTracker.Services;
 using GloomhavenTracker.Models.Enums;
+using GloomhavenTracker.Services.Interfaces;
 
 namespace GloomhavenTracker.Controllers
 {

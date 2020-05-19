@@ -1,6 +1,7 @@
 using GloomhavenTracker.Data;
 using GloomhavenTracker.Models.DatabaseModels;
-using GloomhavenTracker.Services;
+using GloomhavenTracker.Services.Classes;
+using GloomhavenTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using GloomhavenTracker.Data;
+using GloomhavenTracker.Services.Interfaces;
 
-namespace GloomhavenTracker.Services
+namespace GloomhavenTracker.Services.Classes
 {
     public class CharacterService : ICharacterService
     {
@@ -35,7 +36,7 @@ namespace GloomhavenTracker.Services
                 }
                 list.Add(x);
             }
-            return 45 * (level - 1) + (5 * (list.Sum()));
+            return 45 * (level - 1) + 5 * list.Sum();
         }
 
         public int CalculateGoldBasedOnLevel(int level)

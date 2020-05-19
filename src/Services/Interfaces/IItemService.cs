@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GloomhavenTracker.Models.DatabaseModels;
 
-namespace GloomhavenTracker.Services
+namespace GloomhavenTracker.Services.Interfaces
 {
     public interface IItemService
     {

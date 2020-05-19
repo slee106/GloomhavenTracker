@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using GloomhavenTracker.Models;
 using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Services;
+using GloomhavenTracker.Services.Classes;
+using GloomhavenTracker.Services.Interfaces;
 
 namespace GloomhavenTracker
 {

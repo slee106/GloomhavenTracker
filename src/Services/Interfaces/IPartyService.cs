@@ -1,4 +1,4 @@
-namespace GloomhavenTracker.Services
+namespace GloomhavenTracker.Services.Interfaces
 {
     public interface IPartyService
     {

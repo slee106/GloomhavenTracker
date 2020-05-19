@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using GloomhavenTracker.Data;
 using GloomhavenTracker.Models.DatabaseModels;
+using GloomhavenTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace GloomhavenTracker.Services
+namespace GloomhavenTracker.Services.Classes
 {
     public class ItemService : IItemService
     {
@@ -19,47 +20,47 @@ namespace GloomhavenTracker.Services
         {
             switch (partyRepuation)
             {
-                case int n when (19 <= n):
+                case int n when 19 <= n:
                     {
                         return -5;
                     }
-                case int n when (15 <= n && n <= 18):
+                case int n when 15 <= n && n <= 18:
                     {
                         return -4;
                     }
-                case int n when (11 <= n && n <= 14):
+                case int n when 11 <= n && n <= 14:
                     {
                         return -3;
                     }
-                case int n when (7 <= n && n <= 10):
+                case int n when 7 <= n && n <= 10:
                     {
                         return -2;
                     }
-                case int n when (3 <= n && n <= 6):
+                case int n when 3 <= n && n <= 6:
                     {
                         return -1;
                     }
-                case int n when (-2 <= n && n <= 2):
+                case int n when -2 <= n && n <= 2:
                     {
                         return 0;
                     }
-                case int n when (-6 <= n && n <= -2):
+                case int n when -6 <= n && n <= -2:
                     {
                         return 1;
                     }
-                case int n when (-10 <= n && n <= 7):
+                case int n when -10 <= n && n <= 7:
                     {
                         return 2;
                     }
-                case int n when (-14 <= n && n <= -11):
+                case int n when -14 <= n && n <= -11:
                     {
                         return 3;
                     }
-                case int n when (-18 <= n && n <= -15):
+                case int n when -18 <= n && n <= -15:
                     {
                         return 4;
                     }
-                case int n when (n <= -19):
+                case int n when n <= -19:
                     {
                         return 5;
                     }
@@ -72,8 +73,8 @@ namespace GloomhavenTracker.Services
             var items = new List<Item>();
             foreach (var item in unadjustedItems)
             {
-                var ite = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).ThenInclude(x=>x.Character).Single(x => x.Id == item.Id);
-                var numberOfItemsUsed = ite.CharacterItems.Count(x=>x.Character.PartyId == partyId);
+                var ite = gloomhavenTrackerContext.Items.Include(x => x.CharacterItems).ThenInclude(x => x.Character).Single(x => x.Id == item.Id);
+                var numberOfItemsUsed = ite.CharacterItems.Count(x => x.Character.PartyId == partyId);
                 var adjustedItem = item;
                 adjustedItem.NumberAvailable -= numberOfItemsUsed;
                 if (adjustedItem.NumberAvailable > 0)

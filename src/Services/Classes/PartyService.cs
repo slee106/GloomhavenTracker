@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using GloomhavenTracker.Data;
 using GloomhavenTracker.Models.DatabaseModels;
+using GloomhavenTracker.Services.Interfaces;
 
-namespace GloomhavenTracker.Services
+namespace GloomhavenTracker.Services.Classes
 {
     public class PartyService : IPartyService
     {

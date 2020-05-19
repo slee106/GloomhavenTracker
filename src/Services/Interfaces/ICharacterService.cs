@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GloomhavenTracker.Services
+namespace GloomhavenTracker.Services.Interfaces
 {
     public interface ICharacterService
     {

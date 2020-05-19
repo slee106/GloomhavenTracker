@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GloomhavenTracker.Data;
 using GloomhavenTracker.Models.DatabaseModels;
-using GloomhavenTracker.Services;
+using GloomhavenTracker.Services.Classes;
+using GloomhavenTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -92,9 +93,10 @@ namespace GloomhavenTracker.UnitTests.Services
         {
             //Arrange
             var listOfItems = new List<Item>();
+            var partyId = 1;
 
             //Act
-            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems);
+            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems, partyId);
 
             //Assert
             Assert.IsEmpty(ret);
@@ -104,6 +106,7 @@ namespace GloomhavenTracker.UnitTests.Services
         public void Test_GetItemsWithAdjustedAmounts_ReturnsAListWithOneItemThathasntBeenChangedAnd1ForNumberAvailable_WhenCalledWithAListWithOneItemAndContextRetuns0ForCountOfCharacterItems()
         {
             //Arrange
+            var partyId = 1;
             var listOfItems = new List<Item>()
             {
                 new Item()
@@ -124,7 +127,7 @@ namespace GloomhavenTracker.UnitTests.Services
             gloomhavenTrackerContext.SaveChanges();
 
             //Act
-            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems);
+            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems, partyId);
 
             //Assert
             Assert.AreEqual(1, ret.Count);
@@ -135,6 +138,7 @@ namespace GloomhavenTracker.UnitTests.Services
         public void Test_GetItemsWithAdjustedAmounts_ReturnsAListWith0ItemThathasntBeenChanged_WhenCalledWithAListWithOneItemAndContextRetuns1ForCountOfCharacterItems()
         {
             //Arrange
+            var partyId = 1;
             var listOfItems = new List<Item>()
             {
                 new Item()
@@ -149,6 +153,12 @@ namespace GloomhavenTracker.UnitTests.Services
                 CharacterItems = new List<CharacterItem>()
                 {
                     new CharacterItem()
+                    {
+                        Character = new Character()
+                        {
+                            PartyId = partyId
+                        }
+                    }
                 },
                 Available = true,
                 Cost = 123,
@@ -158,7 +168,7 @@ namespace GloomhavenTracker.UnitTests.Services
             gloomhavenTrackerContext.SaveChanges();
 
             //Act
-            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems);
+            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems, partyId);
 
             //Assert
             Assert.IsEmpty(ret);
@@ -168,6 +178,7 @@ namespace GloomhavenTracker.UnitTests.Services
         public void Test_GetItemsWithAdjustedAmounts_ReturnsAListWithTwoItemThathasntBeenChangedAnd2ForNumberAvailable_WhenCalledWithAListWithOneItemAndContextRetuns0ForCountOfCharacterItems()
         {
             //Arrange
+            var partyId = 1;
             var listOfItems = new List<Item>()
             {
                 new Item()
@@ -205,7 +216,7 @@ namespace GloomhavenTracker.UnitTests.Services
             gloomhavenTrackerContext.SaveChanges();
 
             //Act
-            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems);
+            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems, partyId);
 
             //Assert
             Assert.AreEqual(2, ret.Count);
@@ -217,6 +228,7 @@ namespace GloomhavenTracker.UnitTests.Services
         public void Test_GetItemsWithAdjustedAmounts_ReturnsAListWith1ItemThatHas1ForNumberAvailable_WhenCalledWithAListWithTwoItemsAndContextRetuns1ForCountOfCharacterItemsForEachItem()
         {
             //Arrange
+            var partyId = 1;
             var listOfItems = new List<Item>()
             {
                 new Item()
@@ -238,6 +250,12 @@ namespace GloomhavenTracker.UnitTests.Services
                     CharacterItems = new List<CharacterItem>()
                     {
                         new CharacterItem()
+                        {
+                            Character = new Character()
+                            {
+                                PartyId = partyId
+                            }
+                        }
                     },
                     Available = true,
                     Cost = 123,
@@ -250,6 +268,12 @@ namespace GloomhavenTracker.UnitTests.Services
                     CharacterItems = new List<CharacterItem>()
                     {
                         new CharacterItem()
+                        {
+                            Character = new Character()
+                            {
+                                PartyId = partyId
+                            }
+                        }
                     },
                     Available = true,
                     Cost = 123,
@@ -260,7 +284,7 @@ namespace GloomhavenTracker.UnitTests.Services
             gloomhavenTrackerContext.SaveChanges();
 
             //Act
-            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems);
+            var ret = itemService.GetItemsWithAdjustedAmounts(listOfItems, partyId);
 
             //Assert
             Assert.AreEqual(1, ret.Count);

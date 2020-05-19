@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using GloomhavenTracker.Models.ViewModels;
 using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Services;
+using GloomhavenTracker.Services.Interfaces;
 
 namespace GloomhavenTracker.Controllers
 {
