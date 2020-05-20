@@ -38,7 +38,7 @@ namespace GloomhavenTracker
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<ICharacterService, CharacterService>();
             services.AddTransient<IPartyService, PartyService>();
-            // that's where you tell that you want to use MySQL
+            
             services.AddDbContext<GloomhavenTrackerContext>(
                 options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection"))
             );

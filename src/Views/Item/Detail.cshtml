@@ -34,5 +34,6 @@
     </table>
     <div>
          @Html.ActionLink("Back to Character", "Detail", "Character", new { id = @Model.CharacterId}, new { @class = "btn btn-default"})
+         @Html.ActionLink("Sell Item", "SellItem", "Item", new { itemId = @Model.Item.Id, characterId = @Model.CharacterId, itemCost = @Model.Item.Cost }, new { @class = "btn btn-default"})
     </div>
 </div>

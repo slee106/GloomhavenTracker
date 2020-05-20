@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GloomhavenTracker.Data;
@@ -7,21 +8,24 @@ namespace GloomhavenTracker.Services.Classes
 {
     public class CharacterService : ICharacterService
     {
-        GloomhavenTrackerContext gloomhavenTrackerContext;
-        public CharacterService(GloomhavenTrackerContext gloomhavenTrackerContext)
+        private readonly IServiceProvider provider;
+        public CharacterService(IServiceProvider provider)
         {
-            this.gloomhavenTrackerContext = gloomhavenTrackerContext;
+            this.provider = provider;
         }
 
         public List<int> GetAvailableLevels(int partyId)
         {
-            var prosperity = gloomhavenTrackerContext.Parties.Single(x => x.Id == partyId).Prosperity;
-            var listOfAvailableLevels = new List<int>();
-            for (int i = 1; i <= prosperity; i++)
+            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
             {
-                listOfAvailableLevels.Add(i);
+                var prosperity = gloomhavenTrackerContext.Parties.Single(x => x.Id == partyId).Prosperity;
+                var listOfAvailableLevels = new List<int>();
+                for (int i = 1; i <= prosperity; i++)
+                {
+                    listOfAvailableLevels.Add(i);
+                }
+                return listOfAvailableLevels;
             }
-            return listOfAvailableLevels;
         }
 
         public int CalculateExperienceBasedOnLevel(int level)

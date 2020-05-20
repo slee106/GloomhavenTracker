@@ -18,29 +18,32 @@ namespace GloomhavenTracker.Controllers
     public class CharacterController : Controller
     {
         private readonly ILogger<CharacterController> _logger;
-        private readonly GloomhavenTrackerContext gloomhavenTrackerContext;
+        private readonly IServiceProvider provider;
         private readonly ICharacterService characterService;
 
-        public CharacterController(ILogger<CharacterController> logger, GloomhavenTrackerContext gloomhavenTrackerContext, ICharacterService characterService)
+        public CharacterController(ILogger<CharacterController> logger, IServiceProvider provider, ICharacterService characterService)
         {
             _logger = logger;
-            this.gloomhavenTrackerContext = gloomhavenTrackerContext;
+            this.provider = provider;
             this.characterService = characterService;
         }
 
         [HttpGet]
         public IActionResult Index(int partyId)
         {
-            var party = gloomhavenTrackerContext.Parties.Single(x => x.Id == partyId);
-            var charactersForparty = gloomhavenTrackerContext.Characters.Include(x => x.Party).Where(x => x.Party.Id == partyId).ToList();
-
-            var viewModel = new CharacterViewModel()
+            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
             {
-                PartyId = partyId,
-                PartyName = party.Name,
-                Characters = charactersForparty
-            };
-            return View(viewModel);
+                var party = gloomhavenTrackerContext.Parties.Single(x => x.Id == partyId);
+                var charactersForparty = gloomhavenTrackerContext.Characters.Include(x => x.Party).Where(x => x.Party.Id == partyId).ToList();
+
+                var viewModel = new CharacterViewModel()
+                {
+                    PartyId = partyId,
+                    PartyName = party.Name,
+                    Characters = charactersForparty
+                };
+                return View(viewModel);
+            }
         }
 
         [HttpGet]
@@ -57,12 +60,17 @@ namespace GloomhavenTracker.Controllers
         [HttpPost]
         public IActionResult Create(CharacterCreateViewModel model)
         {
-            model.Character.ExperiencePoints = characterService.CalculateExperienceBasedOnLevel(model.Character.Level);
-            model.Character.Gold = characterService.CalculateGoldBasedOnLevel(model.Character.Level);
-            model.Character.PartyId = (int)model.PartyId;
-            model.Character.NumberOfConsumablesAvailable = (int)Math.Round((decimal)(model.Character.Level / 2), 0, MidpointRounding.AwayFromZero);
-            gloomhavenTrackerContext.Characters.Add(model.Character);
-            gloomhavenTrackerContext.SaveChanges();
+            var character = model.Character;
+            character.ExperiencePoints = characterService.CalculateExperienceBasedOnLevel(model.Character.Level);
+            character.Gold = characterService.CalculateGoldBasedOnLevel(model.Character.Level);
+            character.PartyId = (int)model.PartyId;
+            character.NumberOfConsumablesAvailable = (int)Math.Round((decimal)(model.Character.Level / 2), 0, MidpointRounding.AwayFromZero);
+
+            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
+            {
+                gloomhavenTrackerContext.Characters.Add(model.Character);
+                gloomhavenTrackerContext.SaveChanges();
+            }
 
             return RedirectToAction("Detail", "Character", new { id = model.Character.Id });
         }
@@ -70,24 +78,34 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            var character = gloomhavenTrackerContext.Characters.Include(x => x.Party).Include(x => x.CharacterItems).ThenInclude(x => x.Item).Single(x => x.Id == id);
-            var numberOfEquippedConsumables = character.CharacterItems.Where(x => x.Item.Type == ItemType.Consumable && x.Equipped).Count();
-            var viewModel = new CharacterDetailViewModel()
+            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
             {
-                Character = character,
-                ExperiencePointsForNextLevel = characterService.CalculateExperienceBasedOnLevel(character.Level + 1),
-                NumberOfEquippedConsumables = numberOfEquippedConsumables,
-                NumberOfFreeConsumableSpaces = character.NumberOfConsumablesAvailable - numberOfEquippedConsumables
-            };
+                var character = gloomhavenTrackerContext.Characters.Include(x => x.Party)
+                                                                   .Include(x => x.CharacterItems)
+                                                                   .ThenInclude(x => x.Item)
+                                                                   .Single(x => x.Id == id);
 
-            return View(viewModel);
+                var numberOfEquippedConsumables = character.CharacterItems.Where(x => x.Item.Type == ItemType.Consumable && x.Equipped).Count();
+                var viewModel = new CharacterDetailViewModel()
+                {
+                    Character = character,
+                    ExperiencePointsForNextLevel = characterService.CalculateExperienceBasedOnLevel(character.Level + 1),
+                    NumberOfEquippedConsumables = numberOfEquippedConsumables,
+                    NumberOfFreeConsumableSpaces = character.NumberOfConsumablesAvailable - numberOfEquippedConsumables
+                };
+
+                return View(viewModel);
+            }
         }
 
         [HttpGet]
         public IActionResult Delete(int id, int partyId)
         {
-            gloomhavenTrackerContext.Characters.Remove(new Character() { Id = id });
-            gloomhavenTrackerContext.SaveChanges();
+            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
+            {
+                gloomhavenTrackerContext.Characters.Remove(new Character() { Id = id });
+                gloomhavenTrackerContext.SaveChanges();
+            }
 
             return RedirectToAction("Detail", "Party", new { id = partyId });
         }
@@ -95,12 +113,15 @@ namespace GloomhavenTracker.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var model = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id);
-            return View(new CharacterEditViewModel()
+            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
             {
-                Character = model,
-                Retired = model.RetirementDate != null
-            });
+                var model = gloomhavenTrackerContext.Characters.Include(x => x.Party).Single(x => x.Id == id);
+                return View(new CharacterEditViewModel()
+                {
+                    Character = model,
+                    Retired = model.RetirementDate != null
+                });
+            }
         }
 
         [HttpPost]
@@ -112,8 +133,12 @@ namespace GloomhavenTracker.Controllers
             {
                 model.Character.ExperiencePoints = experienceForLevel;
             }
-            gloomhavenTrackerContext.Characters.Update(model.Character);
-            gloomhavenTrackerContext.SaveChanges();
+            
+            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
+            {
+                gloomhavenTrackerContext.Characters.Update(model.Character);
+                gloomhavenTrackerContext.SaveChanges();
+            }
 
             if (stayOnSamePage)
             {

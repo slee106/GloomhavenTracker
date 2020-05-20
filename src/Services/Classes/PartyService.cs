@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GloomhavenTracker.Data;
@@ -8,29 +9,32 @@ namespace GloomhavenTracker.Services.Classes
 {
     public class PartyService : IPartyService
     {
-        private readonly GloomhavenTrackerContext gloomhavenTrackerContext;
+        private readonly IServiceProvider provider;
 
-        public PartyService(GloomhavenTrackerContext gloomhavenTrackerContext)
+        public PartyService(IServiceProvider provider)
         {
-            this.gloomhavenTrackerContext = gloomhavenTrackerContext;
+            this.provider = provider;
         }
 
         public void AddPartyItems(int partyId, decimal partyProsperity)
         {
-            var listOfItemsForProsperity = gloomhavenTrackerContext.Items.Where(x => x.Prosperity <= partyProsperity).ToList();
-
-            var partyItems = new List<PartyItem>();
-            foreach (var item in listOfItemsForProsperity)
+            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
             {
-                partyItems.Add(new PartyItem()
+                var listOfItemsForProsperity = gloomhavenTrackerContext.Items.Where(x => x.Prosperity <= partyProsperity).ToList();
+
+                var partyItems = new List<PartyItem>();
+                foreach (var item in listOfItemsForProsperity)
                 {
-                    ItemId = item.Id,
-                    PartyId = partyId,
-                    Unlocked = true
-                });
+                    partyItems.Add(new PartyItem()
+                    {
+                        ItemId = item.Id,
+                        PartyId = partyId,
+                        Unlocked = true
+                    });
+                }
+                gloomhavenTrackerContext.PartyItems.AddRange(partyItems);
+                gloomhavenTrackerContext.SaveChanges();
             }
-            gloomhavenTrackerContext.PartyItems.AddRange(partyItems);
-            gloomhavenTrackerContext.SaveChanges();
         }
     }
 }

@@ -1,8 +1,10 @@
+using System;
 using GloomhavenTracker.Data;
 using GloomhavenTracker.Models.DatabaseModels;
 using GloomhavenTracker.Services.Classes;
 using GloomhavenTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.Services
@@ -10,8 +12,8 @@ namespace UnitTests.Services
     [TestFixture]
     public class CharacterServiceUnitTests
     {
-
         ICharacterService characterService;
+        Mock<IServiceProvider> mockProvider;
         GloomhavenTrackerContext gloomhavenTrackerContext;
         DbContextOptions<GloomhavenTrackerContext> options;
 
@@ -19,16 +21,14 @@ namespace UnitTests.Services
         public void SetUp()
         {
             options = new DbContextOptionsBuilder<GloomhavenTrackerContext>()
-               .UseInMemoryDatabase(databaseName: "gloomhaven")
+               .UseInMemoryDatabase("gloomhaven")
                .Options;
             gloomhavenTrackerContext = new GloomhavenTrackerContext(options);
-            characterService = new CharacterService(gloomhavenTrackerContext);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
             gloomhavenTrackerContext.Database.EnsureDeleted();
+            gloomhavenTrackerContext.Database.EnsureCreated();
+            mockProvider = new Mock<IServiceProvider>();
+            mockProvider.Setup(x => x.GetService(typeof(GloomhavenTrackerContext))).Returns(gloomhavenTrackerContext);
+            characterService = new CharacterService(mockProvider.Object);
         }
 
         [TestCase(1, 0)]

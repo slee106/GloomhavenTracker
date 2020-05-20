@@ -16,6 +16,7 @@ namespace GloomhavenTracker.UnitTests.Services
     {
         GloomhavenTrackerContext gloomhavenTrackerContext;
         IItemService itemService;
+        Mock<IServiceProvider> mockProvider;
         DbContextOptions<GloomhavenTrackerContext> options;
 
         [SetUp]
@@ -25,13 +26,11 @@ namespace GloomhavenTracker.UnitTests.Services
             .UseInMemoryDatabase(databaseName: "gloomhaven")
             .Options;
             gloomhavenTrackerContext = new GloomhavenTrackerContext(options);
-            itemService = new ItemService(gloomhavenTrackerContext);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
             gloomhavenTrackerContext.Database.EnsureDeleted();
+            gloomhavenTrackerContext.Database.EnsureCreated();
+            mockProvider = new Mock<IServiceProvider>();
+            mockProvider.Setup(x => x.GetService(typeof(GloomhavenTrackerContext))).Returns(gloomhavenTrackerContext);
+            itemService = new ItemService(mockProvider.Object);
         }
 
         #region TestCases
