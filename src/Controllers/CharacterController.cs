@@ -29,24 +29,6 @@ namespace GloomhavenTracker.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int partyId)
-        {
-            using (var gloomhavenTrackerContext = (GloomhavenTrackerContext)provider.GetService(typeof(GloomhavenTrackerContext)))
-            {
-                var party = gloomhavenTrackerContext.Parties.Single(x => x.Id == partyId);
-                var charactersForparty = gloomhavenTrackerContext.Characters.Include(x => x.Party).Where(x => x.Party.Id == partyId).ToList();
-
-                var viewModel = new CharacterViewModel()
-                {
-                    PartyId = partyId,
-                    PartyName = party.Name,
-                    Characters = charactersForparty
-                };
-                return View(viewModel);
-            }
-        }
-
-        [HttpGet]
         public IActionResult Create(int partyId)
         {
             var model = new CharacterCreateViewModel()
