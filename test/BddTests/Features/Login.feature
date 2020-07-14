@@ -7,6 +7,7 @@ Feature: Login
 Scenario: valid login no redirect
        Given I am on the login screen
        When I enter my valid credentials
+       And I click the login button
        Then I should be redirected to the home screen
 
 @Login
@@ -40,6 +41,7 @@ Scenario: redirect to login
 Scenario: valid login redirect
        Given I am redirect to the login page from <action>
        When I enter my valid credentials
+       And I click the login button
        Then I should be redirected to action: <action>
 
        Examples:
@@ -68,6 +70,7 @@ Scenario: invalid login
        Given I am on the login screen
        When I enter <username> for username
        And I enter <password> for password
+       And I click the login button
        Then I should receive an error message
 
        Examples:
@@ -75,3 +78,10 @@ Scenario: invalid login
        | BadUsername |   |
        |  | BadPassword  |
        | BadUsername | BadPassword  |
+
+@Login
+Scenario: missing username
+       Given I am on the login screen
+       When I don't enter a username
+       And I click the login button
+       Then i should recieve an error message

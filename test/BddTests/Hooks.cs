@@ -1,3 +1,9 @@
+using System;
+using System.Diagnostics;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Hosting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using TechTalk.SpecFlow;
@@ -8,6 +14,30 @@ namespace GloomhavenTracker.BddTests
     public class Hooks
     {
         public IWebDriver WebDriver { get; private set; }
+        private static Process process;
+
+        [BeforeTestRun]
+        public static void BeforeTestRun()
+        {
+            process = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    Arguments = "-c \"cd ../../../../../src && dotnet run\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+        }
+
+        [AfterTestRun]
+        public static void AfterTestRun()
+        {
+            process.Kill();
+        }
 
         [BeforeScenario]
         public void BeforeScenario()

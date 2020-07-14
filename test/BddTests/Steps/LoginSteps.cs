@@ -30,7 +30,6 @@ namespace GloomhavenTracker.BddTests.Steps
         {
             loginPageObjects.UsernameTextBook.SendKeys("");
             loginPageObjects.PasswordTextBook.SendKeys("");
-            loginPageObjects.LoginButton.Click();
         }
 
         [Then(@"I should be redirected to the home screen")]
@@ -80,7 +79,6 @@ namespace GloomhavenTracker.BddTests.Steps
         public void WhenIEnterForPassword(string password)
         {
             loginPageObjects.PasswordTextBook.SendKeys(password);
-            loginPageObjects.LoginButton.Click();
         }
 
 
@@ -88,6 +86,12 @@ namespace GloomhavenTracker.BddTests.Steps
         public void ThenIShouldReceiveAnErrorMessage()
         {
             Assert.AreEqual("Invalid login attempt.", loginPageObjects.ValidationError.Text);
+        }
+
+        [When(@"I click the login button")]
+        public void WhenIClickTheLoginButton()
+        {
+            loginPageObjects.LoginButton.Click();
         }
     }
 }
